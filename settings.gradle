@@ -1,0 +1,11 @@
+rootProject.name = 'ezframework'
+
+include "ezframework-web"
+include "ezframework-support"
+//include "ezframework-redis"
+//include "ezframework-jdg"
+include "ezframework-ispn"
+include "ezframework-ehcache"
+include "ezframework-tag"
+include "ezframework-security"
+include "ezframework-rabbitmq"

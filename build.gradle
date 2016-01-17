@@ -1,0 +1,364 @@
+ext {
+    javaVersion 				= '1.7'
+    javaEncoding 				= 'UTF-8'
+	//springVersion 			= '4.1.0.RELEASE'
+	//springVersion 				= '3.2.15.RELEASE'
+	springVersion 				= '4.2.4.RELEASE'
+	springSecurityVersion 		= '3.2.9.RELEASE'
+	infinispanVersion			= '7.2.5.Final'
+	infinispanSpringVersion		= '7.2.5.Final'
+	infinispanJdgVersion		= '6.1.1.Final-redhat-5'
+	infinispanJdgSpringVersion	= '6.0.2.Final'
+	fasterxmlJacksonVersion		= '2.4.4'
+	ezmorphVersion				= '1.0.6'
+	commonsLangVersion			= '2.6'
+	commonsBeanutilsVersion		= '1.9.1'
+	commonsCollectionsVersion	= '3.2.1'
+	commonsIoVersion			= '2.4'
+	commonsFileuploadVersion	= '1.3.1'
+	targetServer 				= project.hasProperty('target') ? project.getProperty('target') : 'local'
+	versionCase			        = project.hasProperty('versionCase') ? project.getProperty('versionCase') : 'SNAPSHOT'
+}
+
+buildscript {
+	repositories {
+		maven { url: mvnRepositorieUrl }
+	}
+	dependencies {
+		//classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
+		//classpath("org.asciidoctor:asciidoctor-gradle-plugin:0.7.0")
+		//classpath("io.spring.gradle:docbook-reference-plugin:0.3.0")
+		//classpath("ws.antonov.gradle.plugins:gradle-plugin-protobuf:0.9.1")
+	}
+}
+
+configure(allprojects) { project ->
+	def versionName = "2.0.0"
+	//def versionName = "2.0." + getRevision()
+	if (versionCase == "SNAPSHOT") {
+        versionName = versionName + "-" + versionCase 
+	} else {
+        versionName = versionName + "." + versionCase
+	}
+
+	group = "pe.kr.ddakker"
+	//version = '1.1.2.SNAPSHOT'
+	//version = '1.1.2.RELEASE'
+	version = versionName
+
+	apply plugin: "java"
+	apply plugin: 'maven'
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
+
+	jar {
+	    manifest {
+            attributes 	'Implementation-Title': archivesBaseName,
+                    'Implementation-Version': project.version,
+                    'CI-Build-Num': project.hasProperty('buildNum') ? project.getProperty('buildNum') : '-1',
+                    'Build-SVN-Version': getRevision(),
+                    'System-JDK': "${System.getProperty('java.version')} (${System.getProperty('java.specification.vendor')})",
+                    'Build-JDK-Version': javaVersion,
+                    'Created-By': 'ddakker@naver.com',
+                    'Create-Date': new Date().format('yyyy-MM-dd HH:mm:ss').toString()
+	    }
+		from("src/META-INF") {
+			into "META-INF"
+			expand(version: project.version)
+		}
+	}
+
+	compileJava {
+		sourceCompatibility=javaVersion
+		targetCompatibility=javaVersion
+	}
+
+	task initSrc << {
+	    project.sourceSets*.allSource.srcDirTrees.flatten().dir.each { dir ->
+	        dir.mkdirs()
+	    }
+	}
+
+	compileTestJava {
+		sourceCompatibility=javaVersion
+		targetCompatibility=javaVersion
+	}
+
+	sourceSets.test.resources.srcDirs = ["src/test/resources", "src/test/java"]
+	sourceSets.main.resources.srcDirs = ["src/main/resources", "src/main/java"]
+
+	repositories {
+		maven {
+			url mvnRepositorieUrl
+			credentials {
+				username mvnRepositorieUsername
+				password mvnRepositoriePassword
+			}
+		}
+	}
+
+	// 인코딩
+	[compileJava, compileTestJava]*.options*.encoding = javaEncoding
+
+    configurations {
+		// logback 사용[commons-logging 의존성 제거]
+		all*.exclude group: 'commons-logging', module: 'commons-logging'
+		//all*.exclude group: 'org.jboss.logging', module: 'jboss-logging'
+		all*.exclude group: 'org.hamcrest', module: 'hamcrest-core'
+		all*.exclude group: 'log4j', module: 'log4j'
+	}
+
+	// SLF4J + Logback
+	List loggerSlf4jAndLogback = [
+	    'ch.qos.logback:logback-core:1.1.2',
+	    'ch.qos.logback:logback-classic:1.1.2',
+	    'org.slf4j:slf4j-api:1.7.7',
+	    'org.slf4j:jcl-over-slf4j:1.7.7',
+	    'org.slf4j:log4j-over-slf4j:1.7.7',
+	    'org.codehaus.janino:janino:2.7.8'
+	]
+
+	dependencies {
+		compile loggerSlf4jAndLogback
+
+		compile "commons-lang:commons-lang:$commonsLangVersion"
+		compile "commons-beanutils:commons-beanutils:$commonsBeanutilsVersion"
+		compile "commons-collections:commons-collections:$commonsCollectionsVersion"
+		compile "commons-io:commons-io:$commonsIoVersion"
+		compile "commons-fileupload:commons-fileupload:$commonsFileuploadVersion"
+
+		compile 'org.projectlombok:lombok:1.16.6'
+
+		testCompile "junit:junit:4.11"
+		testCompile "org.hamcrest:hamcrest-all:1.3"
+	}
+
+	uploadArchives {
+	    repositories.mavenDeployer {
+	        repository(url: mvnRepositorieReleasesUrl) {
+	            authentication(userName: mvnRepositorieUsername, password: mvnRepositoriePassword)
+	        }
+	        snapshotRepository(url: mvnRepositorieSnapshotsUrl) {
+	            authentication(userName: mvnRepositorieUsername, password: mvnRepositoriePassword)
+	        }
+	    }
+	}
+
+	task sourcesJar(type: Jar, dependsOn:classes) {
+	    classifier = 'sources'
+	    from sourceSets.main.allJava
+	}
+
+	artifacts {
+	    archives sourcesJar
+	}
+
+	tasks.eclipse.dependsOn cleanEclipse
+	tasks.eclipse.dependsOn initSrc
+	tasks.jar.dependsOn sourcesJar
+}
+
+project("ezframework-web") {
+	description = "MVC"
+
+	//apply plugin: 'war'
+
+	// Spring 4.x
+	//version = '2.0.0.SNAPSHOT'
+	//version = '2.0.0.RELEASE'
+
+	// Spring 3.2.x
+	//version = '1.0.8.SNAPSHOT'
+	//version = '1.0.8.RELEASE'
+
+
+	List springDependencies = [
+		"org.springframework:spring-web:$springVersion",
+		"org.springframework:spring-webmvc:$springVersion",
+		"org.springframework:spring-beans:$springVersion",
+		"org.springframework:spring-expression:$springVersion",
+		"org.springframework:spring-aop:$springVersion",
+		"org.springframework:spring-tx:$springVersion",
+		"org.springframework:spring-jdbc:$springVersion",
+		"org.springframework:spring-oxm:$springVersion",
+		"org.springframework:spring-context-support:$springVersion"
+	]
+
+	dependencies {
+		compile 'javax.servlet:javax.servlet-api:3.0.1'
+		//        javax.servlet:servlet-api:2.5
+		//provided("javax.servlet:servlet-api:2.5")
+		//optional("javax.servlet.jsp:javax.servlet.jsp-api:2.2.1")
+		//optional("javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1")
+
+		compile springDependencies
+
+
+		compile 'org.aspectj:aspectjweaver:1.7.4'
+		//compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$fasterxmlJacksonVersion"
+		compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.11'
+		
+		compile 'xom:xom:1.0'
+		compile "net.sf.ezmorph:ezmorph:$ezmorphVersion"
+
+
+		//compile 'org.mybatis:mybatis-edit:3.2.7'
+		//compile 'org.mybatis:mybatis:3.3.0'
+		//compile 'org.mybatis:mybatis-spring:1.2.2'
+		compile 'ognl:ognl:2.7.3'
+
+
+		compile 'jstl:jstl:1.2'
+		
+		compile 'net.sf.json-lib:json-lib:2.4:jdk15@jar'
+
+		compile	'org.apache.poi:poi:3.10.1'
+		compile	'org.apache.poi:poi-ooxml:3.10.1'
+
+		testCompile "org.springframework:spring-test:$springVersion"
+
+		compile 'org.hibernate:hibernate-validator:5.1.3.Final'
+
+	}
+
+	sourceSets.main.resources.srcDirs += "src/main/java"
+
+}
+
+project("ezframework-support") {
+	description = "Utils"
+
+	dependencies {
+		compile project(':ezframework-web')
+
+		compile "commons-lang:commons-lang:$commonsLangVersion"
+		compile 'org.apache.httpcomponents:httpclient:4.3.5'
+		//compile 'javamail:javamail:1.4.7'
+	}
+}
+
+project("ezframework-tag") {
+	description = "CustomTag"
+	
+	dependencies {
+		compile project(':ezframework-web')
+
+		compile 'javax.servlet:javax.servlet-api:3.0.1'
+		compile "javax.servlet.jsp:javax.servlet.jsp-api:2.2.1"
+	}
+}
+
+project("ezframework-security") {
+	description = "Security"
+	
+	List springSecurityDependencies = [
+		"org.springframework.security:spring-security-core:$springSecurityVersion",
+		"org.springframework.security:spring-security-web:$springSecurityVersion",
+		"org.springframework.security:spring-security-config:$springSecurityVersion",
+		"org.springframework.security:spring-security-taglibs:$springSecurityVersion"
+	]
+
+	dependencies {
+		compile project(':ezframework-web')
+		compile springSecurityDependencies
+	}
+}
+
+project("ezframework-ehcache") {
+	description = "Local Cache"
+
+	dependencies {
+		compile project(':ezframework-web')
+		compile 'net.sf.ehcache:ehcache-core:2.6.9'
+	}
+}
+
+/*project("ezframework-redis") {
+	dependencies {
+		compile project(':ezframework-web')
+		compile 'org.springframework.data:spring-data-redis:1.4.2.RELEASE'
+		compile 'redis.clients:jedis:+'
+		compile 'org.apache.commons:commons-dbcp2:2.0.1'
+	}
+}*/
+
+project("ezframework-ispn") {
+	description = "Global Cache"
+	dependencies {
+		compile project(':ezframework-web')
+		compile "org.infinispan:infinispan-core:$infinispanVersion"
+		compile "org.infinispan:infinispan-client-hotrod:$infinispanVersion"
+		compile "org.infinispan:infinispan-spring4:$infinispanSpringVersion"
+	}
+}
+
+/*
+project("ezframework-jdg") {
+	dependencies {
+		compile project(':ezframework-web')
+		compile "org.infinispan:infinispan-core:$infinispanJdgVersion"
+		compile "org.infinispan:infinispan-client-hotrod:$infinispanJdgVersion"
+		compile "org.infinispan:infinispan-spring:$infinispanJdgSpringVersion"
+		//compile "org.jgroups:jgroups:3.4.5.Final-redhat-2"
+	}
+}
+*/
+
+project("ezframework-rabbitmq") {
+	description = "Message Queue"
+	dependencies {
+		compile project(':ezframework-web')
+		
+		compile("org.springframework.amqp:spring-amqp:1.5.3.RELEASE") {
+			exclude module: 'jmxri'
+		}
+		compile "org.springframework.amqp:spring-rabbit:1.5.3.RELEASE"
+		compile "org.springframework.amqp:spring-erlang:1.4.6.RELEASE"
+		
+	}
+}
+
+def getRevision() {
+
+    try {
+        if ( "$targetServer" != "local" ){
+            def stdout = new ByteArrayOutputStream()
+            exec {
+                executable = "svn"
+                args = ["info"]
+                standardOutput = stdout
+            }
+
+            if (stdout.toString().trim().indexOf('E155036') > -1) {	// 버전 문제 시
+                exec {
+                    executable = "svn"
+                    args = ["upgrade"]
+                    standardOutput = stdout
+                }
+
+                exec {
+                    executable = "svn"
+                    args = ["info"]
+                    standardOutput = stdout
+                }
+            }
+
+
+            def output = stdout.toString().trim()
+            def matchLastChangedRev = output =~ /마지막 수정 리비전: (\d+)/
+            if (matchLastChangedRev.count != 1) {
+                matchLastChangedRev = output =~ /Last Changed Rev: (\d+)/
+            }
+            def revision = matchLastChangedRev[0][1]
+
+            return revision as int
+        } else {
+            return 0;
+        }
+    } catch(e) {
+		println "error: " + e 
+        return -1;
+    }
+}
+
+
