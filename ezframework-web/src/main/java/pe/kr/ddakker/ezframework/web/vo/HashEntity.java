@@ -158,5 +158,52 @@ public class HashEntity extends HashMap<String, Object> {
     	return getDate(key, "yyyy-MM-dd");
     }
     
+    @Override
+    public Object put(String key, Object value) {
+    	return super.put(convertToCamelCase(key), value);
+    }
+    
+    /**
+	 * Convert a string that may contain underscores to camel case.
+	 * 
+	 * @param str
+	 *            the String to convert
+	 * @author http://dev.anyframejava.org/subv/anyframe-opensource/anyframe/trunk/plugin/essential/core/projects/anyframe-core/src/main/java/org/anyframe/util/StringUtil.java
+	 * @return Camel case representation of the underscore string.
+	 */
+	public static String convertToCamelCase(String str) {
+		return convertToCamelCase(str, '_');
+	}
+
+	/**
+	 * Convert a camel case string to underscore representation.
+	 * 
+	 * @param str
+	 *            Camel case name.
+	 * @param delimiter
+	 * 			  delimiter for conversioin
+	 * @author http://dev.anyframejava.org/subv/anyframe-opensource/anyframe/trunk/plugin/essential/core/projects/anyframe-core/src/main/java/org/anyframe/util/StringUtil.java
+	 * @return Camel case representation of the inputString.
+	 */
+	public static String convertToCamelCase(String str, char delimiter) {
+		StringBuilder result = new StringBuilder();
+		boolean nextUpper = false;
+		String allLower = str.toLowerCase();
+
+		for (int i = 0; i < allLower.length(); i++) {
+			char currentChar = allLower.charAt(i);
+			if (currentChar == delimiter) {
+				nextUpper = true;
+			} else {
+				if (nextUpper) {
+					currentChar = Character.toUpperCase(currentChar);
+					nextUpper = false;
+				}
+				result.append(currentChar);
+			}
+		}
+		return result.toString();
+	}
+    
     
 }
