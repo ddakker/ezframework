@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
 	<tlib-version>1.0</tlib-version>
 	<short-name>url</short-name>
-	<uri>http://www.ezwel.com/url</uri>
+	<uri>http://ezdevgroup.com/url</uri>
 
 
 	<function>
 		<name>resource</name>
-		<function-class>com.ezwel.core.tag.servlet.jsp.UrlTag</function-class>
+		<function-class>org.ezdevgroup.ezframework.tag.servlet.jsp.UrlTag</function-class>
 		<function-signature>
 			java.lang.String resource(java.lang.String)
 		</function-signature>
@@ -16,7 +16,7 @@
 
 	<function>
 		<name>img</name>
-		<function-class>com.ezwel.core.tag.servlet.jsp.UrlTag</function-class>
+		<function-class>org.ezdevgroup.ezframework.tag.servlet.jsp.UrlTag</function-class>
 		<function-signature>
 			java.lang.String img(java.lang.String)
 		</function-signature>
@@ -24,7 +24,7 @@
 	<function>
 		<!-- SiteMesh 에서와 같이 Controller을 통과하지 않은 케이스들에서 사용 -->
 		<name>img2</name>
-		<function-class>com.ezwel.core.tag.servlet.jsp.UrlTag</function-class>
+		<function-class>org.ezdevgroup.ezframework.tag.servlet.jsp.UrlTag</function-class>
 		<function-signature>
 			java.lang.String img(java.lang.String, javax.servlet.ServletRequest)
 		</function-signature>

@@ -4,11 +4,11 @@
 
     <tlib-version>1.0</tlib-version>
     <short-name>ui</short-name>
-    <uri>http://www.ezwel.com/ui</uri>
+    <uri>http://ezdevgroup.com/ui</uri>
 
     <tag>
         <name>paging</name>
-        <tag-class>com.ezwel.core.tag.servlet.jsp.PagingTag</tag-class>
+        <tag-class>org.ezdevgroup.ezframework.tag.servlet.jsp.PagingTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>value</name>

@@ -16,7 +16,7 @@
         </property>
     </bean>
 
-    <bean id="eCacheTest" class="com.ezwel.core.ehcache.EhCache">
+    <bean id="eCacheTest" class="org.ezdevgroup.ezframework.ehcache.EhCache">
 	    <constructor-arg name="cacheManager" ref="ehCacheManager" />
 	    <constructor-arg name="cacheName" value="EVENT" />
 	</bean>

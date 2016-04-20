@@ -1,9 +1,7 @@
 ext {
     javaVersion 				= '1.7'
     javaEncoding 				= 'UTF-8'
-	//springVersion 			= '4.1.0.RELEASE'
-	//springVersion 				= '3.2.15.RELEASE'
-	springVersion 				= '4.2.4.RELEASE'
+	springVersion 				= '4.2.5.RELEASE'
 	springSecurityVersion 		= '3.2.9.RELEASE'
 	infinispanVersion			= '7.2.5.Final'
 	infinispanSpringVersion		= '7.2.5.Final'
@@ -16,6 +14,10 @@ ext {
 	commonsCollectionsVersion	= '3.2.1'
 	commonsIoVersion			= '2.4'
 	commonsFileuploadVersion	= '1.3.1'
+	mybatisVersion				= '3.4.0'
+	mybatisSpringVersion		= '1.3.0'
+	springRabbitVersion 		= '1.5.5.RELEASE'
+	gradleVersion				= '2.12'
 	targetServer 				= project.hasProperty('target') ? project.getProperty('target') : 'local'
 	versionCase			        = project.hasProperty('versionCase') ? project.getProperty('versionCase') : 'SNAPSHOT'
 }
@@ -36,12 +38,12 @@ configure(allprojects) { project ->
 	def versionName = "2.0.0"
 	//def versionName = "2.0." + getRevision()
 	if (versionCase == "SNAPSHOT") {
-        versionName = versionName + "-" + versionCase 
+        versionName = versionName + "-" + versionCase
 	} else {
         versionName = versionName + "." + versionCase
 	}
 
-	group = "pe.kr.ddakker"
+	group = "org.ezdevgroup"
 	//version = '1.1.2.SNAPSHOT'
 	//version = '1.1.2.RELEASE'
 	version = versionName
@@ -197,20 +199,17 @@ project("ezframework-web") {
 		compile 'org.aspectj:aspectjweaver:1.7.4'
 		//compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$fasterxmlJacksonVersion"
 		compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.11'
-		
+
 		compile 'xom:xom:1.0'
 		compile "net.sf.ezmorph:ezmorph:$ezmorphVersion"
 
 
-		//compile 'org.mybatis:mybatis-edit:3.2.7'
-		//compile 'org.mybatis:mybatis:3.3.0'
-		//compile 'org.mybatis:mybatis-spring:1.2.2'
-		compile 'ognl:ognl:2.7.3'
+		compile "org.mybatis:mybatis:$mybatisVersion"
+		compile "org.mybatis:mybatis-spring:$mybatisSpringVersion"
+		compile 'ognl:ognl:3.1.3'
 
 
 		compile 'jstl:jstl:1.2'
-		
-		compile 'net.sf.json-lib:json-lib:2.4:jdk15@jar'
 
 		compile	'org.apache.poi:poi:3.10.1'
 		compile	'org.apache.poi:poi-ooxml:3.10.1'
@@ -239,7 +238,7 @@ project("ezframework-support") {
 
 project("ezframework-tag") {
 	description = "CustomTag"
-	
+
 	dependencies {
 		compile project(':ezframework-web')
 
@@ -250,7 +249,7 @@ project("ezframework-tag") {
 
 project("ezframework-security") {
 	description = "Security"
-	
+
 	List springSecurityDependencies = [
 		"org.springframework.security:spring-security-core:$springSecurityVersion",
 		"org.springframework.security:spring-security-web:$springSecurityVersion",
@@ -308,13 +307,11 @@ project("ezframework-rabbitmq") {
 	description = "Message Queue"
 	dependencies {
 		compile project(':ezframework-web')
-		
-		compile("org.springframework.amqp:spring-amqp:1.5.3.RELEASE") {
-			exclude module: 'jmxri'
-		}
-		compile "org.springframework.amqp:spring-rabbit:1.5.3.RELEASE"
-		compile "org.springframework.amqp:spring-erlang:1.4.6.RELEASE"
-		
+
+		//compile("org.springframework.amqp:spring-amqp:1.5.5.RELEASE") {
+		//	exclude module: 'jmxri'
+		//}
+		compile "org.springframework.amqp:spring-rabbit:$springRabbitVersion"
 	}
 }
 
@@ -356,9 +353,13 @@ def getRevision() {
             return 0;
         }
     } catch(e) {
-		println "error: " + e 
+		println "error: " + e
         return -1;
     }
 }
 
 
+task wrapper(type: Wrapper) {
+	description = 'Generates gradlew[.bat] scripts'
+	gradleVersion = gradleVersion
+}

@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+body, table {color: #666; font-family:dotum, 돋움, NanumGothic, 나눔고딕, "Malgun Gothic", "맑은 고딕", Tahoma, Geneva, sans-serif;font-size:12px}
+input {color: #666; font-family:dotum, 돋움, NanumGothic, 나눔고딕, "Malgun Gothic", "맑은 고딕", Tahoma, Geneva, sans-serif;font-size:12px}
+/*select {color: #666; font-family:dotum, 돋움, NanumGothic, 나눔고딕, "Malgun Gothic", "맑은 고딕", Tahoma, Geneva, sans-serif;font-size:12px}*/
+th { background-color: #F5F5F5; height: 20px}
+
+.tabledesc {color:#2268AC;font-size:9pt;line-height:16px;}
+.popuptitle {color:#000000;font-size:12pt;font-weight:bold;line-height:20px;}
+
+.subtitle {font-size:12px;font-weight:bold;line-height:17px;padding:0 0 0 24px;background:url(http://img.ezdevgroup.org/welfare_pms/images/common/icon01.jpg) no-repeat;}
+

@@ -16,7 +16,7 @@
 		<property name="configurationProperties" ref="hotrod" />
 	</bean>
 
-	<bean id="testCache" class="com.ezwel.core.ispn.IspnCache">
+	<bean id="testCache" class="org.ezdevgroup.ezframework.ispn.IspnCache">
 	    <constructor-arg name="cacheManager" ref="ispnCacheManager" />
 	    <constructor-arg name="cacheName" value="TEST_CACHE" />
 	</bean>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java-members" deleted="false" description="" enabled="true" name="addtest">@${testType:newType(org.junit.Test)}&#13;
+public void test_${name}() {&#13;
+	${staticImport:importStatic('org.junit.Assert.*', 'org.hamcrest.Matchers.*')}&#13;
+}</template></templates>

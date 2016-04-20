@@ -24,18 +24,18 @@
 	</bean>
 
 	<util:properties id="global" location="classpath:/properties/globals-properties.xml" />
-	<bean id="globalsProperties" class="com.ezwel.core.framework.web.GlobalsProperties">
+	<bean id="globalsProperties" class="org.ezdevgroup.ezframework.web.GlobalsProperties">
 		<constructor-arg index="0">
 			<ref bean="global" />
 		</constructor-arg>
 	</bean>
 
     <!-- component-scan 설정-->
-	<context:component-scan base-package="com.ezwel" use-default-filters="false">
+	<context:component-scan base-package="org.ezdevgroup" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
 		<!-- <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/> -->
-		
+
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>

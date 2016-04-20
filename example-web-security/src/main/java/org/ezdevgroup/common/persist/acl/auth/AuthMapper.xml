@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ezdevgroup.common.persist.acl.auth.AuthMapper">
+	<sql id="pagingLimit">
+		LIMIT #{firstIndex} , #{pageSize}
+	</sql>
+
+	<select id="getList" resultType="org.ezdevgroup.common.domain.entity.Auth">
+		/*
+			권한 리스트
+			getList
+			org/ezdevgroup/common/persist/acl/auth/AuthMapper.xml
+		*/
+		SELECT
+			  AUTH_CD   AS authCd
+			, AUTH_NM   AS authNm
+			, AUTH_DC   AS authDc
+            , DATE_FORMAT(STR_TO_DATE(REG_DT, '%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS regDt
+            , DATE_FORMAT(STR_TO_DATE(MODI_DT, '%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS modiDt
+		FROM ACL_AUTH
+		<where>
+			<if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(searchKwd)">
+				AND ${searchKey} like '%${searchKwd}%'
+			</if>
+		</where>
+	    ORDER BY AUTH_NM
+	</select>
+
+
+	<select id="getView" resultType="org.ezdevgroup.common.domain.entity.Auth">
+		/*
+			권한 정보(1개)
+			view
+			org/ezdevgroup/common/persist/acl/auth/AuthMapper.xml
+		*/
+		SELECT
+			  AUTH_CD   AS authCd
+			, AUTH_NM   AS authNm
+			, AUTH_DC   AS authDc
+			, DATE_FORMAT(STR_TO_DATE(REG_DT, '%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS regDt
+            , DATE_FORMAT(STR_TO_DATE(MODI_DT, '%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS modiDt
+		FROM ACL_AUTH
+		WHERE AUTH_CD = #{authCd}
+	</select>
+	
+	<delete id="removeAuthResource">
+		/*
+			권한에 대한 리소스 삭제
+			removeAuthResource
+			org/ezdevgroup/common/persist/acl/auth/AuthMapper.xml
+		*/
+		DELETE
+		FROM ACL_AUTH_RESOURCE
+		WHERE AUTH_CD = #{authCd}
+		<if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(resourceCd)">
+			AND RESOURCE_CD = #{resourceCd}
+		</if>
+	</delete>
+	
+</mapper>
