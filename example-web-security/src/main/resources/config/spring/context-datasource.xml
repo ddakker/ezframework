@@ -9,6 +9,10 @@
 						http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
 						http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
+	<jdbc:embedded-database id="dataSource" type="H2">
+		<jdbc:script location="classpath:init-mariadb.sql" execution="INIT" />
+	</jdbc:embedded-database>
+
 	<!-- MyBatis -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />

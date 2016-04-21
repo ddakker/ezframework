@@ -100,13 +100,13 @@
 	<beans:bean id="ezUserDetailsService" class="org.ezdevgroup.ezframework.security.EzUserDetailsServiceImpl">
 		<beans:property name="dataSource" 		ref="dataSource" />
 		<beans:property name="userQuery" 		value="SELECT
-															USER_ID, USER_NM, USER_TYPE, USER_PWD, USE_YN, IF(USE_YN='Y', 1, 0) AS ENABLED
+															USER_ID, USER_NM, USER_TYPE, USER_PWD, USE_YN, 1 AS ENABLED
 														FROM EZ_USER
 		                                                WHERE CONCAT(USER_ID, USER_TYPE) = ?"/>
 		<beans:property name="authoritiesQuery" value="SELECT IFNULL((SELECT AUTH_CD
 														   FROM ACL_USER_AUTH
 														   WHERE USER_AUTH_KEY = ?), 'ROLE_USER')
-														FROM DUAL"/>
+														FROM (VALUES(0))"/>
 
 
 	   	<beans:property name="roleHierarchy" ref="roleHierarchy"/>
