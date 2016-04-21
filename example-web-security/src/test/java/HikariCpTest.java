@@ -16,7 +16,7 @@ public class HikariCpTest {
 	      config.setMaximumPoolSize(1);
 	      config.setConnectionTestQuery("VALUES 1");
 	      config.setDriverClassName("oracle.jdbc.pool.OracleDataSource");
-	      config.setJdbcUrl("jdbc:oracle:thin:@222.231.44.177:1521:ezwel");
+	      config.setJdbcUrl("jdbc:oracle:thin:@192.168.0.177:1521:ddakker");
 	      config.addDataSourceProperty("user", "tams");
 	      config.addDataSourceProperty("password", "roqkf_0606");
 

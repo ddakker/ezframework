@@ -53,7 +53,7 @@ public class EzHttpClientCase {
 	@Test
 	public void testSession_세션_유지test() {
 		EzHttpClient http = new EzHttpClient();
-		http.setUrl("http://222.231.44.209/redmine/login");
+		http.setUrl("http://192.168.0.209/redmine/login");
 		int statusCode = http.send();
 
 		System.out.println("1http.getStatusCode(): " + statusCode);
@@ -68,12 +68,12 @@ public class EzHttpClientCase {
 		params.put("login", "%EB%A1%9C%EA%B7%B8%EC%9D%B8+%C2%BB");
 
 		http.setParams(params);
-		statusCode = http.send("http://222.231.44.209/redmine/login");
+		statusCode = http.send("http://192.168.0.209/redmine/login");
 
 		System.out.println("2http.getStatusCode(): " + statusCode);
 
 		//statusCode = http.send("http://verify.ezdevgroup.org/redmine/issues/1157");
-		statusCode = http.send("http://222.231.44.209/redmine");
+		statusCode = http.send("http://192.168.0.209/redmine");
 		System.out.println("3http.getStatusCode(): " + statusCode);
 
 		System.out.println("----1: " + http.getResultString());

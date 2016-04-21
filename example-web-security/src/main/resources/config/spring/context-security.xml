@@ -17,10 +17,14 @@
 
 
 	<http auto-config="false" use-expressions="true" disable-url-rewriting="true" entry-point-ref="loginUrlAuthenticationEntryPoint">
-		<intercept-url pattern="${page.login.form.url}" 	access="permitAll" 		requires-channel="${page.ssl.channel}"/>
-		<intercept-url pattern="/" 							access="permitAll" 		requires-channel="http"/>
-		<intercept-url pattern="${page.login.success.url}" 	access="authenticated" 	requires-channel="http"/>
-		
+		<intercept-url pattern="/login/accessDenied" 			access="permitAll" 		requires-channel="http"/><!-- org.ezdevgroup.ezframework.security.web.EzSecurityControllerAdvice.ACCESS_DENIED -->
+		<intercept-url pattern="/login/isNotAuthentication"		access="permitAll" 		requires-channel="http"/><!-- org.ezdevgroup.ezframework.security.web.EzSecurityControllerAdvice.IS_NOT_AUTHENTICATION -->
+		<intercept-url pattern="/login/authenticationFailure"	access="permitAll" 		requires-channel="http"/><!-- org.ezdevgroup.ezframework.security.web.EzSecurityControllerAdvice.AUTHENTICATION_FAILURE -->
+
+		<intercept-url pattern="${page.login.form.url}" 		access="permitAll" 		requires-channel="${page.ssl.channel}"/>
+		<intercept-url pattern="/" 								access="permitAll" 		requires-channel="http"/>
+		<intercept-url pattern="${page.login.success.url}" 		access="authenticated" 	requires-channel="http"/>
+
 		<!-- <form-login login-page="${page.login.form.url}" />	커스텀 인증 -->
 		<form-login login-page="${page.login.form.url}"
 					login-processing-url="${page.login.url}"
@@ -30,23 +34,23 @@
 					authentication-failure-url="/authenticationFailure" />
 		<logout logout-url="${page.logout.url}" logout-success-url="${page.logout.success.url}" />
 		<access-denied-handler ref="ezAccessDeniedHandler" />
-		
+
 
 		<!-- 이중 로그인 관리 -->
 		<!-- <session-management invalid-session-url="${page.login.form.url}" session-fixation-protection="none">
 			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" expired-url="${page.login.form.url}" />
 		</session-management> -->
-		
+
 		<custom-filter position="BASIC_AUTH_FILTER"  ref="basicAuthenticationFilter" />
 		<!-- <custom-filter after="FORM_LOGIN_FILTER" ref="ezUsernamePasswordAuthenticationFilter" /> -->
 		<custom-filter after="FILTER_SECURITY_INTERCEPTOR" ref="ezSecurityInterceptor" />
-		
+
 	</http>
-	
+
 	<beans:bean id="loginUrlAuthenticationEntryPoint" class="org.ezdevgroup.ezframework.security.web.authentication.EzLoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg name="loginFormUrl" value="${page.login.form.url}" />
 	</beans:bean>
-	
+
 	<beans:bean id="basicAuthenticationFilter" class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
 		<beans:property name="authenticationManager" ref="ezAuthenticationManager" />
         <beans:property name="authenticationEntryPoint" ref="loginUrlAuthenticationEntryPoint" />
@@ -59,7 +63,7 @@
 			<!-- <password-encoder ref="passwordEncoder" /> -->
 		</authentication-provider>
 	</authentication-manager>
-	
+
 	<beans:bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
 		<beans:property name="defaultFailureUrl" value="${page.login.form.url}?success=false"/>
 	</beans:bean>
@@ -78,9 +82,9 @@
 		<beans:property name="securityMetadataSource" ref="ezSecurityMetadataSource" />
 	</beans:bean>
 
-	<!-- 
+	<!--
 		커스텀 인증
-			- id/pwd 이외 데이터를 처리 하고 싶을때 
+			- id/pwd 이외 데이터를 처리 하고 싶을때
 	<beans:bean id="ezUsernamePasswordAuthenticationFilter" class="org.ezdevgroup.ezframework.security.web.filter.EzUsernamePasswordAuthenticationFilter">
 		<beans:property name="authenticationManager" ref="ezAuthenticationManager" />
         <beans:property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
@@ -90,7 +94,7 @@
 		<beans:property name="usernameParameter" value="userId" />
 		<beans:property name="passwordParameter" value="userPwd" />
 	</beans:bean> -->
-	
+
 
 	<!-- <beans:bean id="ezUserDetailsService" class="org.ezdevgroup.sangdam4u.common.security.Ez4uUserDetailsServiceImpl">	커스텀 인증 -->
 	<beans:bean id="ezUserDetailsService" class="org.ezdevgroup.ezframework.security.EzUserDetailsServiceImpl">
@@ -114,7 +118,7 @@
 	   	</beans:property>
 	   	<beans:property name="ipCheckQuery" value="SELECT IP FROM ACL_USER_IP" /> -->
 	</beans:bean>
-	
+
 
 	<beans:bean id="ezSecurityMetadataSource" class="org.ezdevgroup.ezframework.security.access.interceptor.EzSecurityMetadataSource">
 		<beans:constructor-arg name="ezAuthService" ref="ezAuthService"></beans:constructor-arg>
@@ -149,6 +153,6 @@
 														   AND r.RESOURCE_URL != '/**'
 														   AND AUTH_CD = ?"/><!-- 필드 무조건 한개 -->
 	</beans:bean>
-	
-	
+
+
 </beans:beans>

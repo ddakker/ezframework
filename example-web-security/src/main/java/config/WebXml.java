@@ -40,36 +40,8 @@ public class WebXml implements WebApplicationInitializer {
 
         GlobalProperties globalsProperties = rootContext.getBean("globalsProperties", GlobalProperties.class);
         String serverType 	= StringUtils.defaultString(globalsProperties.getProperty("server.type"), "local");
-        String logoutUrl	= StringUtils.defaultString(globalsProperties.getProperty("page.logout.url"), "");
-        String domain		= StringUtils.defaultString(globalsProperties.getProperty("site.domain"), "ezwel.com");
-        System.out.println("========== domain: " + domain + " ==========");
         System.out.println("========== serverType: " + serverType + " ==========");
-        System.out.println("========== logoutUrl: " + logoutUrl + " ========== ");
 
-
-
-        /* SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS Filter 영역 SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS */
-        if (GlobalProperties.STAGE.equals(serverType) || GlobalProperties.REAL.equals(serverType)) {
-        	/*
-             System.out.println("========== Loding KHAN Filter ==========");
-        	InfinispanLibSessionFilter infinispanLibSessionFilter = new InfinispanLibSessionFilter();
-            FilterRegistration.Dynamic infinispanLibSession = servletContext.addFilter("infinispanLibSessionFilter", infinispanLibSessionFilter);
-            infinispanLibSession.setInitParameter("useLibraryMode", "true");
-            infinispanLibSession.setInitParameter("configFile", "khan-session.xml");
-            infinispanLibSession.setInitParameter("infinispanCache", "KHAN_SESSION");
-            infinispanLibSession.setInitParameter("infinispanLoginCache", "KHAN_SESSION_LOGIN");
-            infinispanLibSession.setInitParameter("sessionId", "__KSMSID__");
-            infinispanLibSession.setInitParameter("domain", domain);
-            infinispanLibSession.setInitParameter("path", "/");
-            infinispanLibSession.setInitParameter("secure", "false");
-            infinispanLibSession.setInitParameter("httpOnly", "true");
-            infinispanLibSession.setInitParameter("sessionTimeout", "10");
-            infinispanLibSession.setInitParameter("excludeRegExp", "/.+\\.(html|jpg|jpeg|png|gif|js|css|swf)");
-            infinispanLibSession.setInitParameter("allowDuplicateLogin", "false");
-            infinispanLibSession.setInitParameter("logoutUrl", logoutUrl);
-            infinispanLibSession.addMappingForUrlPatterns(EnumSet.of(DispatcherType.ERROR, DispatcherType.INCLUDE, DispatcherType.REQUEST, DispatcherType.FORWARD), true, "/*");
-            */
-        }
 
         // 인코딩 설정
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();

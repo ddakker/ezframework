@@ -43,13 +43,13 @@ public class EzAccessDescisionManager implements AccessDecisionManager {
 	            }
 			}
 		}
-		
-		
+
+
 		try {
 			if (obj instanceof FilterInvocation) {
 				HttpServletRequest request = ((FilterInvocation) obj).getHttpRequest();
 				HttpServletResponse response = ((FilterInvocation) obj).getHttpResponse();
-				
+
 				if ( SecurityHelper.isXRequestedWith(request) || SecurityHelper.isAuthorization(request) || SecurityHelper.isContentTypeJson(request) || SecurityHelper.isContentTypeJsonp(request) || SecurityHelper.isContentTypeXml(request)) {
 					request.getRequestDispatcher(EzSecurityControllerAdvice.IS_NOT_AUTHENTICATION).forward(request, response);
 				}
@@ -58,7 +58,7 @@ public class EzAccessDescisionManager implements AccessDecisionManager {
 			log.warn("예외 호출 케이스 처리 실패", e);
 		}
 
-        throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+		throw new AccessDeniedException("접근 권한이 없습니다.");
 	}
 
 	@Override

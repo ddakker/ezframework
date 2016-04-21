@@ -13,17 +13,17 @@
 
 		<link href="${url:resource('/resources/css/sample.css')}" rel="stylesheet" type="text/css" />
 		<%@ include file="/WEB-INF/jsp/layout/inc/staticBefore.jspf"%>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shCore.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shLegacy.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shBrushBash.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shBrushCss.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shBrushGroovy.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shBrushJava.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shBrushJScript.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shBrushSql.js"></script>
-		<script src="http://verify.ezdevgroup.org/resources/scripts/shBrushXml.js"></script>
-		<link href="http://verify.ezdevgroup.org/resources/styles/shCore.css" type=text/css rel=stylesheet />
-		<link href="http://verify.ezdevgroup.org/resources/styles/shThemeEclipse.css" type=text/css rel=stylesheet />
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shCore.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shLegacy.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shBrushBash.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shBrushCss.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shBrushGroovy.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shBrushJava.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shBrushJScript.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shBrushSql.js"></script>
+		<script src="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shBrushXml.js"></script>
+		<link href="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shCore.css" type=text/css rel=stylesheet />
+		<link href="http://s1.daumcdn.net/cfs.tistory/custom/blog/22/222668/skin/images/shThemeEclipse.css" type=text/css rel=stylesheet />
 		<script type=text/javascript>
 			SyntaxHighlighter.all();
 		</script>

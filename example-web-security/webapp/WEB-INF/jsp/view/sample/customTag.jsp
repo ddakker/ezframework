@@ -17,6 +17,7 @@
 						프로젝트에 포함된 정적 리소스 사용
 						<pre class="brush: html">
 							&lt;script src="\${url:resource('/resources/js/jquery-1.11.1.min.js')}">&lt;/script>
+							&lt;script src="\${url:resource('/resources/img/buttonWhite.gif')}">&lt;/script>
 						</pre>
 					</li>
 					<li>

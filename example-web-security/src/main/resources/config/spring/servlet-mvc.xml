@@ -21,7 +21,7 @@
             </list>
         </property>
     </bean>
-    
+
 	<mvc:annotation-driven />
 
     <context:component-scan base-package="org.ezdevgroup">
@@ -61,8 +61,8 @@
 	            <!-- JSONP View -->
 	            <bean class="org.ezdevgroup.ezframework.web.servlet.view.json.MappingJsonpView" />
 
-	            <!-- XML View -->
-	            <bean class="org.ezdevgroup.ezframework.web.servlet.view.xml.MappingXmlView" />
+	            <!-- XML View
+	            <bean class="org.ezdevgroup.ezframework.web.servlet.view.xml.MappingXmlView" /> -->
 	        </list>
 	    </property>
 	</bean>
@@ -70,8 +70,6 @@
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
 		<property name="order" value="1" />
 	</bean>
-	<bean name="excelView" class="org.ezdevgroup.ezframework.web.servlet.view.excel.ExcelView" />
-
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     	<property name="order" value="3" />
         <property name="prefix" value="/WEB-INF/jsp/view/"/>

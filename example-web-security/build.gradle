@@ -9,7 +9,7 @@ ext {
     javaEncoding 		= 'UTF-8'
 	gradleVersion		= '2.12'
 	springVersion 		= '4.1.4.RELEASE'
-	ezframeworkVersion	= '2.1.+'
+	ezframeworkVersion	= '1.0.+'
 	targetServer = project.hasProperty('target') ? project.getProperty('target') : 'local'
 }
 
@@ -45,23 +45,16 @@ repositories {
 }
 
 dependencies {
-	/*
+
 	compile "org.ezdevgroup:ezframework-web:$ezframeworkVersion"
 	compile "org.ezdevgroup:ezframework-support:$ezframeworkVersion"
 	compile "org.ezdevgroup:ezframework-tag:$ezframeworkVersion"
 	compile "org.ezdevgroup:ezframework-security:$ezframeworkVersion"
 	compile "org.ezdevgroup:ezframework-ehcache:$ezframeworkVersion"
-	compile "org.ezdevgroup:ezframework-jdg:$ezframeworkVersion"
+	compile "org.ezdevgroup:ezframework-ispn:$ezframeworkVersion"
 	compile "org.ezdevgroup:ezframework-rabbitmq:$ezframeworkVersion"
 
-	compile fileTree(dir: '../../ezframework-web/build/libs', include: '*.jar')
-	compile fileTree(dir: '../../ezframework-support/build/libs', include: '*.jar')
-	compile fileTree(dir: '../../ezframework-tag/build/libs', include: '*.jar')
-	compile fileTree(dir: '../../ezframework-security/build/libs', include: '*.jar')
-	compile fileTree(dir: '../../ezframework-ehcache/build/libs', include: '*.jar')
-	compile fileTree(dir: '../../ezframework-ispn/build/libs', include: '*.jar')
-	compile fileTree(dir: '../../ezframework-rabbitmq/build/libs', include: '*.jar')
-	*/
+	/*
 	compile project(':ezframework-web')
 	compile project(':ezframework-support')
 	compile project(':ezframework-tag')
@@ -69,6 +62,7 @@ dependencies {
 	compile project(':ezframework-ehcache')
 	compile project(':ezframework-ispn')
 	compile project(':ezframework-rabbitmq')
+	*/
 
 
 	compile 'org.mybatis:mybatis:3.4.0'

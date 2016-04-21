@@ -34,7 +34,7 @@ public class RabbitMQRecvTest {
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
 			System.out.println("factory: " + factory);
-			factory.setHost("222.231.44.162");
+			factory.setHost("192.168.0.162");
 			factory.setUsername("admin");
 			factory.setPassword("1230987");
 			factory.setVirtualHost("/");
@@ -63,11 +63,11 @@ public class RabbitMQRecvTest {
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
 			System.out.println("factory: " + factory);
-			factory.setUsername("ezwel");
-			factory.setPassword("ezwel");
+			factory.setUsername("ddakker");
+			factory.setPassword("ddakker");
 			factory.setVirtualHost("log");
 			
-			Address[] addrArr = new Address[]{ new Address("222.231.44.162", 5672), new Address("222.231.44.162", 5673), new Address("222.231.44.175", 5673), new Address("222.231.44.175", 5673)};
+			Address[] addrArr = new Address[]{ new Address("192.168.0.162", 5672), new Address("192.168.0.162", 5673), new Address("192.168.0.175", 5673), new Address("192.168.0.175", 5673)};
 			ExecutorService es = Executors.newFixedThreadPool(20);
 			connection = factory.newConnection(es, addrArr);
 			System.out.println("connection: " + connection);

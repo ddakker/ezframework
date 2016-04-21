@@ -31,27 +31,27 @@ public class RabbitMQTest {
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
 			System.out.println("factory: " + factory);
-			/*factory.setHost("222.231.44.162");
+			/*factory.setHost("192.168.0.162");
 			factory.setPort(5672);
-			factory.setUsername("ezwel");
-			factory.setPassword("ezwel");
+			factory.setUsername("ddakker");
+			factory.setPassword("ddakker");
 			//factory.setUsername("admin");
 			//factory.setPassword("1230987");
 			factory.setVirtualHost("/");*/
 			
-			/*factory.setHost("222.231.44.162");
+			/*factory.setHost("192.168.0.162");
 			factory.setPort(5672);
-			factory.setUsername("ezwel");
-			factory.setPassword("ezwel");
+			factory.setUsername("ddakker");
+			factory.setPassword("ddakker");
 			factory.setVirtualHost("/");*/
-			//factory.setUri("amqp://ezwel:ezwel@222.231.44.162:5672/log");
-			factory.setUsername("ezwel");
-			factory.setPassword("ezwel");
+			//factory.setUri("amqp://ddakker:ddakker@192.168.0.162:5672/log");
+			factory.setUsername("ddakker");
+			factory.setPassword("ddakker");
 			factory.setVirtualHost("log");
 			factory.setConnectionTimeout(100);
 			
-			Address[] addrArr = new Address[]{ new Address("222.231.44.162", 5672), new Address("222.231.44.162", 5673), new Address("222.231.44.175", 5673), new Address("222.231.44.175", 5673)};
-			//Address[] addrArr = new Address[]{ new Address("222.231.44.162", 5679)};
+			Address[] addrArr = new Address[]{ new Address("192.168.0.162", 5672), new Address("192.168.0.162", 5673), new Address("192.168.0.175", 5673), new Address("192.168.0.175", 5673)};
+			//Address[] addrArr = new Address[]{ new Address("192.168.0.162", 5679)};
 			ExecutorService es = Executors.newFixedThreadPool(20);
 			
 			connection = factory.newConnection(es, addrArr);
@@ -83,7 +83,7 @@ public class RabbitMQTest {
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
 			System.out.println("factory: " + factory);
-			factory.setHost("222.231.44.162");
+			factory.setHost("192.168.0.162");
 			factory.setUsername("admin");
 			factory.setPassword("1230987");
 			factory.setVirtualHost("/");

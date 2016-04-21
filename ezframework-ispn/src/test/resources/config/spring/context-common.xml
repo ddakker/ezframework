@@ -10,7 +10,7 @@
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:properties/globals-properties.xml</value>
+                <value>classpath:properties/global-properties.xml</value>
             </list>
         </property>
     </bean>
@@ -23,7 +23,7 @@
 		</property>
 	</bean>
 
-	<util:properties id="global" location="classpath:/properties/globals-properties.xml" />
+	<util:properties id="global" location="classpath:/properties/global-properties.xml" />
 	<bean id="globalsProperties" class="org.ezdevgroup.ezframework.web.GlobalsProperties">
 		<constructor-arg index="0">
 			<ref bean="global" />

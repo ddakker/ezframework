@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<comment>globals-properties local</comment>
+	<comment>global-properties local</comment>
 	<entry key="server.type">local</entry>								<!-- 서버정보[local,dev,stage,real] -->
 
 	<entry key="content.key.result.code">result</entry>					<!-- 결과 코드 Key -->
@@ -26,11 +26,11 @@
 
 	<!-- log4jdbc
 	<entry key="jdbc.pms.driverClassName">net.sf.log4jdbc.DriverSpy</entry>
-	<entry key="jdbc.pms.url">jdbc:log4jdbc:mysql://222.231.44.184:3306/ez_tams</entry>
+	<entry key="jdbc.pms.url">jdbc:log4jdbc:mysql://192.168.0.184:3306/ez_tams</entry>
 	-->
 	<!-- log4sql -->
 	<entry key="jdbc.default.driverClassName">core.log.jdbc.driver.MysqlDriver</entry>
-	<entry key="jdbc.default.url">jdbc:mysql://222.231.44.184:3306/ez_tams</entry>
+	<entry key="jdbc.default.url">jdbc:mysql://192.168.0.184:3306/ez_tams</entry>
 	<entry key="jdbc.default.username">tams</entry>
 	<entry key="jdbc.default.password">roqkf_0606</entry>
 

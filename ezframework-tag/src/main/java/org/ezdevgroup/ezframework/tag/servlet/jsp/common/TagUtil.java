@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import javax.servlet.ServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -15,8 +17,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @auther ljc727 2014. 6. 16.
  */
 public class TagUtil {
+	private static Logger log = LoggerFactory.getLogger(TagUtil.class);
 
-	private static final String PROPERTIES_RESOURCE_PATH = "/properties/globals-properties.xml";
+	private static final String PROPERTIES_RESOURCE_PATH = "/properties/global-properties.xml";
 
 	private static final Properties APPLICATION_PROPERTIES = new Properties();
 
@@ -30,12 +33,17 @@ public class TagUtil {
 			ClassLoader loader = Thread.currentThread().getContextClassLoader();
 			is = loader.getResourceAsStream(resourcePath);
 
+			if (is == null) {
+				throw new Exception("InputStream Instance Null");
+			}
+
 			if (resourcePath.toLowerCase().endsWith("xml")) {
 				properties.loadFromXML(is);
 			} else {
 				properties.load(is);
 			}
 		} catch (Exception ex) {
+			log.error("loadProperties FAIL PROPERTIES_RESOURCE_PATH: {}", PROPERTIES_RESOURCE_PATH, ex);
 			throw new RuntimeException(ex.getMessage(), ex);
 		} finally {
 			if (is != null) try { is.close(); } catch (IOException e) {}
@@ -59,7 +67,7 @@ public class TagUtil {
 	 * @auther ljc727 2014. 6. 17.
 	 */
 	public static String getImageSSL(ServletRequest request) {
-		return APPLICATION_PROPERTIES.getProperty("resource.imgEzwel" + (request.isSecure()?"s":""));
+		return APPLICATION_PROPERTIES.getProperty("resource.img" + (request.isSecure()?"s":""));
 	}
 
 }

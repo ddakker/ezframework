@@ -24,6 +24,7 @@ ext {
 
 buildscript {
 	repositories {
+		mavenCentral()
 		maven { url: mvnRepositorieUrl }
 	}
 	dependencies {
@@ -31,14 +32,15 @@ buildscript {
 		//classpath("org.asciidoctor:asciidoctor-gradle-plugin:0.7.0")
 		//classpath("io.spring.gradle:docbook-reference-plugin:0.3.0")
 		//classpath("ws.antonov.gradle.plugins:gradle-plugin-protobuf:0.9.1")
+		//classpath group: 'com.layer', name: 'gradle-git-repo-plugin', version: '2.0.2'
 	}
 }
 
 configure(allprojects) { project ->
-	def versionName = "2.0.0"
+	def versionName = "1.0.0"
 	//def versionName = "2.0." + getRevision()
 	if (versionCase == "SNAPSHOT") {
-        versionName = versionName + "-" + versionCase
+        versionName = versionName + "." + new Date().format("yyyyMMddHHmmss") + "-" + versionCase
 	} else {
         versionName = versionName + "." + versionCase
 	}
@@ -52,6 +54,8 @@ configure(allprojects) { project ->
 	apply plugin: 'maven'
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
+
+	//apply plugin: 'git-repo'
 
 	jar {
 	    manifest {
@@ -90,6 +94,7 @@ configure(allprojects) { project ->
 	sourceSets.main.resources.srcDirs = ["src/main/resources", "src/main/java"]
 
 	repositories {
+		mavenCentral()
 		maven {
 			url mvnRepositorieUrl
 			credentials {
@@ -97,6 +102,8 @@ configure(allprojects) { project ->
 				password mvnRepositoriePassword
 			}
 		}
+		//github("layerhq", "maven-private", "master", "releases")
+    	//git("https://github.com/ddakker/maven_repo.git", "arbitrary.unique.name", "master", "releases")
 	}
 
 	// 인코딩
@@ -137,7 +144,7 @@ configure(allprojects) { project ->
 
 	uploadArchives {
 	    repositories.mavenDeployer {
-	        repository(url: mvnRepositorieReleasesUrl) {
+	    	repository(url: mvnRepositorieReleasesUrl) {
 	            authentication(userName: mvnRepositorieUsername, password: mvnRepositoriePassword)
 	        }
 	        snapshotRepository(url: mvnRepositorieSnapshotsUrl) {

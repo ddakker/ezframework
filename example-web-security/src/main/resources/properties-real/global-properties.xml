@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<comment>globals-properties real</comment>
-	<entry key="server.type">local</entry>								<!-- 서버정보[local,dev,stage,real] -->
+	<comment>global-properties real</comment>
+	<entry key="server.type">real</entry>								<!-- 서버정보[local,dev,stage,real] -->
 
 	<entry key="content.key.result.code">result</entry>					<!-- 결과 코드 Key -->
 	<entry key="content.key.result.message">message</entry>				<!-- 결과 메시지 Key -->
@@ -19,17 +19,17 @@
 	<entry key="page.login.form.url">/login/form</entry>				<!-- 로그인 폼  페이지[PMS는 이 단계에서 GW와 연동처리] -->
 	<entry key="page.login.url">/login</entry>							<!-- 로그인 처리 페이지[Spring j_spring_security_check 대체] -->
 	<entry key="page.logout.url">/login/logout</entry>					<!-- 로그아웃 완료 페이지 -->
-	<entry key="page.accessDenied.url">/accessDenied</entry>			<!-- 권한 없음 -->
+	<entry key="page.accessDenied.url">/login/accessDenied</entry>		<!-- 권한 없음 -->
 
 	<entry key="page.login.success.url">/sample</entry>					<!-- 로그인 완료 페이지 -->
-	<entry key="page.logout.success.url">/accessDenied</entry>			<!-- 로그아웃 완료 페이지 -->
+	<entry key="page.logout.success.url">/login/form</entry>			<!-- 로그아웃 완료 페이지 -->
 	<entry key="page.ssl.channel">https</entry>							<!-- 페이지 SSL 설정 -->
 
 	<entry key="mail.server"></entry>
 	<entry key="mail.admin"></entry>
 
 	<entry key="site.url">http://sample.ezdevgroup.org</entry>
-	<entry key="site.domain">ezwel.com</entry>
+	<entry key="site.domain">ezdevgroup</entry>
 
 	<entry key="resource.img">http://img.ezdevgroup.org</entry>
 	<entry key="resource.imgs">https://img.ezdevgroup.org</entry>
