@@ -10,7 +10,7 @@
 						http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
 	<jdbc:embedded-database id="dataSource" type="H2">
-		<jdbc:script location="classpath:init-mariadb.sql" execution="INIT" />
+		<jdbc:script location="classpath:init-h2.sql" execution="INIT" />
 	</jdbc:embedded-database>
 
 	<!-- MyBatis -->

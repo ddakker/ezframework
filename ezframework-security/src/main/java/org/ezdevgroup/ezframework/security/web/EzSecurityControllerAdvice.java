@@ -36,7 +36,7 @@ public class EzSecurityControllerAdvice {
 	 */
 	@RequestMapping(value=ACCESS_DENIED)
 	public void accessDenied(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws AccessDeniedException {
-		log.debug("==== Access is denied(권한이 없는 요청입니다)");
+		log.warn("==== Access is denied(권한이 없는 요청입니다)");
 		throw new AccessDeniedException("Access is denied(권한이 없는 요청입니다)");
 	}
 
