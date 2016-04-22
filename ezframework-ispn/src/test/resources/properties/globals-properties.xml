@@ -46,6 +46,6 @@
 	<entry key="site.url">http://localhost:8080</entry>
 	<entry key="site.domain">localhost</entry>
 
-	<entry key="resource.imgEzwel">http://img.ezdevgroup.com</entry>
-	<entry key="resource.imgEzwels">https://img.ezdevgroup.com</entry>
+	<entry key="resource.img">http://img.ezdevgroup.com</entry>
+	<entry key="resource.imgs">https://img.ezdevgroup.com</entry>
 </properties>
