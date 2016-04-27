@@ -33,7 +33,7 @@ dependencies {
 	mybatisSpringVersion		= '1.3.0'
 	springRabbitVersion 		= '1.5.5.RELEASE'
 }
-
+```
 
 ### Quick Start
   * [템플릿으로 시작하기](https://github.com/ddakker/ezframework/wiki/%ED%85%9C%ED%94%8C%EB%A6%BF%EC%9C%BC%EB%A1%9C-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0)
