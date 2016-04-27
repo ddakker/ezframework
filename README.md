@@ -14,6 +14,27 @@ dependencies {
 }
 ```
 
+### Environment Or OpenSource Library
+```
+	javaVersion 				= '1.7'
+	javaEncoding 				= 'UTF-8'
+	springVersion 				= '4.2.5.RELEASE'
+	springSecurityVersion 		= '3.2.9.RELEASE'
+	infinispanVersion			= '7.2.5.Final'
+	infinispanSpringVersion		= '7.2.5.Final'
+	fasterxmlJacksonVersion		= '2.4.4'
+	ezmorphVersion				= '1.0.6'
+	commonsLangVersion			= '2.6'
+	commonsBeanutilsVersion		= '1.9.1'
+	commonsCollectionsVersion	= '3.2.1'
+	commonsIoVersion			= '2.4'
+	commonsFileuploadVersion	= '1.3.1'
+	mybatisVersion				= '3.4.0'
+	mybatisSpringVersion		= '1.3.0'
+	springRabbitVersion 		= '1.5.5.RELEASE'
+}
+
+
 ### Quick Start
   * [템플릿으로 시작하기](https://github.com/ddakker/ezframework/wiki/%ED%85%9C%ED%94%8C%EB%A6%BF%EC%9C%BC%EB%A1%9C-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0)
   * [구성](https://github.com/ddakker/ezframework/wiki/%EA%B5%AC%EC%84%B1)
