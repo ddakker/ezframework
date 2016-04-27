@@ -1,6 +1,7 @@
 package org.ezdevgroup.ezframework.security.web.filter;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,15 +13,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class EzUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	private static Logger log = LoggerFactory.getLogger(EzUsernamePasswordAuthenticationFilter.class);
-	
+
 	public static String IS_CUSTOM_PARAMETER_KEY = "*****is_custom_parameterMap*****";
-	
+
 	private ObjectMapper objectMapper = null;
 	public EzUsernamePasswordAuthenticationFilter() {
 		objectMapper = new ObjectMapper();
 	}
-	
-	
+
+
 	@Override
     protected String obtainUsername(HttpServletRequest request) {
 		if (log.isDebugEnabled()) {
@@ -36,7 +37,7 @@ public class EzUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 
         String jsonUsername = "";
 		try {
-			Map<String, String[]> parameterMap = request.getParameterMap();
+			Map<String, String[]> parameterMap = new HashMap<String, String[]>(request.getParameterMap());
 			parameterMap.put("*****comment*****", new String[]{"Spring Security 인증 파라미터 가공"});
 			parameterMap.put(IS_CUSTOM_PARAMETER_KEY, null);
 			jsonUsername = objectMapper.writeValueAsString(parameterMap);
