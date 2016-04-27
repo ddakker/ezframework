@@ -15,14 +15,14 @@
 			org/ezdevgroup/common/persist/acl/user/user-mapper.xml
 		*/
 		SELECT
-			  U.USER_ID AS userId
-			, U.USER_TYPE AS userType
+			  U.USER_ID
+			, U.USER_TYPE
 			, CONCAT(U.USER_ID, U.USER_TYPE) AS userAuthKey
-			, U.USER_NM AS userNm
-            , UA.AUTH_CD AS authCd
-            , A.AUTH_NM AS authNm
-		FROM EZ_USER U LEFT OUTER JOIN ACL_USER_AUTH UA ON (CONCAT(U.USER_ID, U.USER_TYPE) = UA.USER_AUTH_KEY)				
-		LEFT OUTER JOIN ACL_AUTH A USING (AUTH_CD)
+			, U.USER_NM
+            , UA.AUTH_CD
+            , A.AUTH_NM
+		FROM EZ_USER U LEFT OUTER JOIN ACL_USER_AUTH UA ON (CONCAT(U.USER_ID, U.USER_TYPE) = UA.USER_AUTH_KEY)
+		LEFT OUTER JOIN ACL_AUTH A ON (A.AUTH_CD = UA.AUTH_CD)
 		<where>
 	        <if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(searchKwd)">
 				AND ${searchKey} like '%${searchKwd}%'
@@ -42,8 +42,8 @@
 			org/ezdevgroup/common/persist/acl/user/user-mapper.xml
 		*/
 		SELECT COUNT(*)
-		FROM EZ_USER U LEFT OUTER JOIN ACL_USER_AUTH UA ON (CONCAT(U.USER_ID, U.USER_TYPE) = UA.USER_AUTH_KEY)				
-		LEFT OUTER JOIN ACL_AUTH A USING (AUTH_CD)
+		FROM EZ_USER U LEFT OUTER JOIN ACL_USER_AUTH UA ON (CONCAT(U.USER_ID, U.USER_TYPE) = UA.USER_AUTH_KEY)
+		LEFT OUTER JOIN ACL_AUTH A ON (A.AUTH_CD = UA.AUTH_CD)
 		<where>
 	        <if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(searchKwd)">
 				AND ${searchKey} like '%${searchKwd}%'
@@ -52,7 +52,6 @@
 	        	AND U.USER_ID = ${userId}
 	        </if>
 	    </where>
-        ORDER BY U.USER_NM
 	</select>
 
 </mapper>

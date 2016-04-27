@@ -16,13 +16,13 @@ public interface AuthHierarchyMapper {
 			+ " 		getList"
 			+ " 		org.ezdevgroup.common.service.acl.auth.mapper.AuthHierarchyMapper"
 			+ " */"
-			+ " SELECT AH.SEQ																AS seq"
-			+ "			, AH.PARENT_AUTH_CD													AS parentAuthCd"
+			+ " SELECT AH.SEQ																"
+			+ "			, AH.PARENT_AUTH_CD													"
 			+ "         , (SELECT AUTH_NM FROM  ACL_AUTH WHERE AUTH_CD = AH.CHILD_AUTH_CD)	AS parentAuthNm"
-			+ "         , AH.CHILD_AUTH_CD												   	AS childAuthCd"
+			+ "         , AH.CHILD_AUTH_CD												   	"
 			+ "         , (SELECT AUTH_NM FROM  ACL_AUTH WHERE AUTH_CD = AH.CHILD_AUTH_CD) 	AS childAuthNm"
 			+ " FROM ACL_AUTH_HIERARCHY AH"
-			+ " ORDER BY parentAuthCd")
+			+ " ORDER BY AH.PARENT_AUTH_CD")
 	public List<AuthHierarchy> getList();
 
 	@Select("/*"

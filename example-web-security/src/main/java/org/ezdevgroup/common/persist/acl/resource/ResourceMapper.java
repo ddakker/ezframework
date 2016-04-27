@@ -21,7 +21,7 @@ public interface ResourceMapper {
 			+ " */"
 			+ " INSERT "
 			+ " INTO ACL_RESOURCE "
-			+ " VALUES(#{resourceCd}, #{resourceNm}, #{resourceDc}, #{resourceUrl}, DATE_FORMAT(now(),'%Y%m%d%H%i%s'), DATE_FORMAT(now(),'%Y%m%d%H%i%s'))")
+			+ " VALUES(#{resourceCd}, #{resourceNm}, #{resourceDc}, #{resourceUrl}, TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS'), TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS'))")
 	public int add(ResourceDto resource);
 
 	@Update("/*"
@@ -33,7 +33,7 @@ public interface ResourceMapper {
 			+ " 	RESOURCE_NM = #{resourceNm}"
 			+ " 	, RESOURCE_URL = #{resourceUrl}"
 			+ " 	, RESOURCE_DC = #{resourceDc}"
-			+ " 	, MODI_DT = DATE_FORMAT(now(),'%Y%m%d%H%i%s')"
+			+ " 	, MODI_DT = TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS')"
 			+ " WHERE RESOURCE_CD = #{resourceCd}")
 	public int modify(ResourceDto resource);
 

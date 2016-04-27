@@ -16,14 +16,14 @@
 		*/
 
 		SELECT
-			  R.RESOURCE_CD   AS resourceCd
-			, R.RESOURCE_NM   AS resourceNm
-			, R.RESOURCE_DC   AS resourceDc
-			, R.RESOURCE_URL	AS resourceUrl
-              	, DATE_FORMAT(STR_TO_DATE(R.REG_DT, '%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS regDt
-              	, DATE_FORMAT(STR_TO_DATE(R.MODI_DT, '%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS modiDt
+			  R.RESOURCE_CD
+			, R.RESOURCE_NM
+			, R.RESOURCE_DC
+			, R.RESOURCE_URL
+              	, R.REG_DT
+              	, R.MODI_DT
               	<if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(authCd)">
-              		, IF((SELECT COUNT(*) FROM ACL_AUTH_RESOURCE WHERE RESOURCE_CD = R.RESOURCE_CD AND AUTH_CD = #{authCd})=1, 'Y', 'N') AS authResourceYn
+              		, DECODE((SELECT COUNT(*) FROM ACL_AUTH_RESOURCE WHERE RESOURCE_CD = R.RESOURCE_CD AND AUTH_CD = #{authCd}), 1, 'Y', 'N') AS authResourceYn
               	</if>
 		FROM ACL_RESOURCE R
 		<where>

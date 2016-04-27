@@ -22,7 +22,7 @@ public interface AuthMapper {
 			+ " */"
 			+ " INSERT INTO "
 			+ " ACL_AUTH "
-			+ " VALUES(#{authCd}, #{authNm}, #{authDc}, DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'), DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'))")
+			+ " VALUES(#{authCd}, #{authNm}, #{authDc}, TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS'), TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS'))")
 	public int add(AuthDto auth);
 
 	@Update("/*"
@@ -33,7 +33,7 @@ public interface AuthMapper {
 			+ " UPDATE ACL_AUTH SET"
 			+ " 	AUTH_NM = #{authNm}"
 			+ " 	, AUTH_DC = #{authDc}"
-			+ " 	, MODI_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')"
+			+ " 	, MODI_DT = TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS')"
 			+ " WHERE AUTH_CD = #{authCd}")
 	public int modify(AuthDto auth);
 
@@ -64,7 +64,7 @@ public interface AuthMapper {
 			+ " */"
 			+ " INSERT "
 			+ " INTO ACL_AUTH_RESOURCE "
-			+ " VALUES(#{authCd}, #{resourceCd}, DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'), DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'))")
+			+ " VALUES(#{authCd}, #{resourceCd}, TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS'), TO_CHAR(current_timestamp, 'YYYYMMDDHH24MISS'))")
 	public int addAuthResource(ResourceDto resourceDto);
 
 	public int removeAuthResource(ResourceDto resourceDto);

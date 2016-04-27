@@ -8,6 +8,7 @@
                         http://www.springframework.org/schema/security/spring-security.xsd">
 
 
+	<http pattern="/console/**" security="none" />
 	<http pattern="/info.jsp" security="none" />
 	<http pattern="/test" security="none" />
 	<http pattern="/test/**" security="none" />
