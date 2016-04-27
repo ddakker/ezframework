@@ -38,7 +38,6 @@ dependencies {
 ### Quick Start
   * [템플릿으로 시작하기](https://github.com/ddakker/ezframework/wiki/%ED%85%9C%ED%94%8C%EB%A6%BF%EC%9C%BC%EB%A1%9C-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0)
   * [구성](https://github.com/ddakker/ezframework/wiki/%EA%B5%AC%EC%84%B1)
-  * [전반적 간략 소개](https://github.com/ddakker/ezframework/wiki/%EC%A0%84%EB%B0%98%EC%A0%81-%EA%B0%84%EB%9E%B5-%EC%86%8C%EA%B0%9C)
 
 ### Modules
   * [ezframework-web](https://github.com/ddakker/ezframework/wiki/ezframework-web)
