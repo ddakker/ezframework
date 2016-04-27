@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpStatus;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
-import org.ezdevgroup.ezframework.support.wrapper.http.EzHttpClient;
 import org.ezdevgroup.ezframework.support.wrapper.http.security.impl.Base64Encryption;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -158,6 +158,30 @@ public class EzHttpClientCase {
 				System.out.println("sesultSampleBody.age: " + sesultSampleBody.getAge());
 			}
 		}
+	}
+
+	@Test
+	public void test_BasicAccessAuthentication() {
+		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin@2001", "admin");
+
+		EzHttpClient http = new EzHttpClient();
+
+		Map<String, Object> params = new HashMap<>();
+
+		http.setUrl("http://localhost:8080/sample");
+
+		http.setMothod(EzHttpClient.GET);
+		//http.setContentType(EzHttpClient.CONTENT_JSON);
+		//http.setAccept(EzHttpClient.CONTENT_JSON);
+		http.setDataType(EzHttpClient.JSON);
+		http.setBody(params);
+		http.setCredentials(credentials);
+		http.send();
+		System.out.println(http.getResultString());
+
+		Map<String, Object> resultMap = http.getResultClass(HashMap.class);
+
+		assertThat("성공 여부", http.getResultString(), is("0000"));
 	}
 
 }
