@@ -1,0 +1,41 @@
+<%@page pageEncoding="UTF-8"%>
+<ul>
+	<sec:authorize access="isAnonymous()">
+		<li><a href="/login/form">로그인</a></li>
+	</sec:authorize>
+	<sec:authorize access="isAuthenticated()">
+		사용자: <b><sec:authentication property="principal.user.userNm"/></b>
+		<spring:eval var="authList" expression="T(org.ezdevgroup.sample.security.UserDetailsHelper).getAuthorities()"></spring:eval>
+		<select>
+			<c:forEach var="authStr" items="${authList}">
+				<option>${authStr}</option>
+			</c:forEach>
+		</select>
+		<li><a href="/login/logout">로그아웃</a></li>
+	</sec:authorize>
+	<li><a href="<c:out value="/acl/authUser" />">사용자 권한관리</a></li>
+	<li><a href="<c:out value="/acl/auth" />">인증 권한관리</a></li>
+	<li><a href="<c:out value="/acl/resource" />">인증 리소스관리</a></li>
+</ul>
+
+<h1><a href="/sample">메뉴얼</a></h1>
+
+<ul>
+	<li><a href="https://github.com/ddakker/ezframework/wiki" target="_blank">기타 등등 메뉴얼</a></li>
+	<li><h2>sample</h2></li>
+	<ul>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/resultCase" />">통신 방법[MediaType별 케이스]</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/springElCase" />">Spring El사용법[[properties, MessageSource, Class접근]</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/listTran" />">DB Trancaction 및 MyBatis</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/list" />">List Paging 및 Paging TagLib</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/relation" />">Table 관계</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/customTag" />">CustomTag/EL Lib</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/write/form" />">File Upload</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/onlyAdmin" />">권한테스트[관리자]</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/onlyUser" />">권한테스트[사용자]</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/security" />">권한별 제어</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/bind/vali?test=1234" />">유효성 체크 자동화=성공</a></li>
+		<li style="margin-bottom: 10px"><a href="<c:out value="/sample/bind/vali" />">유효성 체크 자동화=실패</a></li>
+		<li style="margin-bottom: 10px"><a href="#">Cache 사용[org.ezdevgroup.EhCacheTestCase 참조]</a></li>
+	</li>
+</ul>

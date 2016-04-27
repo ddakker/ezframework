@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>global-properties stage</comment>
+	<entry key="server.type">stage</entry>								<!-- 서버정보[local,dev,stage,real] -->
+
+	<entry key="content.key.result.code">result</entry>					<!-- 결과 코드 Key -->
+	<entry key="content.key.result.message">message</entry>				<!-- 결과 메시지 Key -->
+	<entry key="content.value.success">0000</entry>						<!-- 처리 성공 -->
+	<entry key="content.value.exception">9001</entry>					<!-- 처리 실패 -->
+	<entry key="content.value.badcreden">8001</entry>					<!-- 권한 획득 실패 -->
+	<entry key="content.value.notauth">8002</entry>						<!-- 권한 없음 -->
+
+	<entry key="view.jsp.error">error/error</entry>						<!-- 에러 페이지 -->
+	<entry key="view.jsp.failauth">error/failAuth</entry>				<!-- 권한 획득 실패(로그인 실패) -->
+	<entry key="view.jsp.notauth">error/notAuth</entry>					<!-- 권한 없음 -->
+
+	<entry key="page.main.url">/sample</entry>							<!-- 메인 페이지 -->
+	<entry key="page.login.form.url">/login/form</entry>				<!-- 로그인 폼  페이지[PMS는 이 단계에서 GW와 연동처리] -->
+	<entry key="page.login.url">/login</entry>							<!-- 로그인 처리 페이지[Spring j_spring_security_check 대체] -->
+	<entry key="page.logout.url">/login/logout</entry>					<!-- 로그아웃 완료 페이지 -->
+	<entry key="page.accessDenied.url">/login/accessDenied</entry>		<!-- 권한 없음 -->
+
+	<entry key="page.login.success.url">/sample</entry>					<!-- 로그인 완료 페이지 -->
+	<entry key="page.logout.success.url">/login/form</entry>			<!-- 로그아웃 완료 페이지 -->
+	<entry key="page.ssl.channel">any</entry>							<!-- 페이지 SSL 설정 -->
+	<entry key="mail.server"></entry>
+	<entry key="mail.admin"></entry>
+
+	<entry key="site.url">http://stage-sample.ezdevgroup.org</entry>
+	<entry key="site.domain">ezdevgroup</entry>
+
+	<entry key="resource.img">http://img.ezdevgroup.org</entry>
+	<entry key="resource.imgs">https://img.ezdevgroup.org</entry>
+</properties>

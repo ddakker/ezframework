@@ -1,0 +1,17 @@
+<%@ page pageEncoding="UTF-8" %><%-- [전 처리 JS]OnLoad 이전에 사용될 수 있는 JS 및 CSS --%>
+
+<link href="${url:resource('/resources/css/base.css')}" rel="stylesheet" type="text/css" />
+<link href="${url:resource('/resources/js/plugin/jquery.divpop.css')}" rel="stylesheet" type="text/css" />
+<link href="${url:resource('/resources/js/plugin/calendarJquery/jquery.datetimepicker.css')}" rel="stylesheet" type="text/css" />
+
+<script src="${url:resource('/resources/js/jquery-1.11.1.min.js')}"></script>
+<script src="${url:resource('/resources/js/jquery-ui-1.10.3.min.js')}"></script>
+<script src="${url:resource('/resources/js/plugin/jquery.alert.js')}"></script>
+<script src="${url:resource('/resources/js/plugin/jquery.cookie.js')}"></script>
+<script src="${url:resource('/resources/js/plugin/jquery.divpop.js')}"></script>
+<script src="${url:resource('/resources/js/plugin/common.js')}"></script>
+
+<script src="${url:resource('/resources/js/plugin/calendarJquery/jquery.datetimepicker.js')}"></script>
+
+<script src="${url:resource('/resources/js/plugin/jquery.validate/jquery.validate.js')}"></script>
+<script src="${url:resource('/resources/js/plugin/jquery.validate/additional-methods.js')}"></script>

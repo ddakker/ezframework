@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ezdevgroup.common.persist.acl.user.UserAuthMapper">
+	<sql id="pagingLimit">
+		LIMIT #{firstIndex} , #{pageSize}
+	</sql>
+
+	<select id="getList" resultType="org.ezdevgroup.common.domain.entity.UserAuth">
+		/*
+			User 정보 Object Or List
+			getList
+			org/ezdevgroup/common/persist/acl/user/user-mapper.xml
+		*/
+		SELECT
+			  U.USER_ID
+			, U.USER_TYPE
+			, CONCAT(U.USER_ID, U.USER_TYPE) AS userAuthKey
+			, U.USER_NM
+            , UA.AUTH_CD
+            , A.AUTH_NM
+		FROM EZ_USER U LEFT OUTER JOIN ACL_USER_AUTH UA ON (CONCAT(U.USER_ID, U.USER_TYPE) = UA.USER_AUTH_KEY)
+		LEFT OUTER JOIN ACL_AUTH A ON (A.AUTH_CD = UA.AUTH_CD)
+		<where>
+	        <if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(searchKwd)">
+				AND ${searchKey} like '%${searchKwd}%'
+			</if>
+	        <if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(userId)">
+	        	AND U.USER_ID = ${userId}
+	        </if>
+        </where>
+        ORDER BY U.USER_NM
+		<include refid="pagingLimit" />
+	</select>
+
+	<select id="getListCnt" resultType="int">
+		/*
+			user List Cnt
+			getListCnt
+			org/ezdevgroup/common/persist/acl/user/user-mapper.xml
+		*/
+		SELECT COUNT(*)
+		FROM EZ_USER U LEFT OUTER JOIN ACL_USER_AUTH UA ON (CONCAT(U.USER_ID, U.USER_TYPE) = UA.USER_AUTH_KEY)
+		LEFT OUTER JOIN ACL_AUTH A ON (A.AUTH_CD = UA.AUTH_CD)
+		<where>
+	        <if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(searchKwd)">
+				AND ${searchKey} like '%${searchKwd}%'
+			</if>
+	        <if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(userId)">
+	        	AND U.USER_ID = ${userId}
+	        </if>
+	    </where>
+	</select>
+
+</mapper>

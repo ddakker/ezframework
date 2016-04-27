@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ezdevgroup.common.persist.acl.resource.ResourceMapper">
+	<sql id="pagingLimit">
+		LIMIT #{firstIndex} , #{pageSize}
+	</sql>
+
+	<select id="getList" resultType="org.ezdevgroup.common.domain.entity.Resource">
+		/*
+			리소스 리스트
+			getList
+			org/ezdevgroup/common/persist/acl/resource/ResourceMapper.xml
+		*/
+
+		SELECT
+			  R.RESOURCE_CD
+			, R.RESOURCE_NM
+			, R.RESOURCE_DC
+			, R.RESOURCE_URL
+              	, R.REG_DT
+              	, R.MODI_DT
+              	<if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(authCd)">
+              		, DECODE((SELECT COUNT(*) FROM ACL_AUTH_RESOURCE WHERE RESOURCE_CD = R.RESOURCE_CD AND AUTH_CD = #{authCd}), 1, 'Y', 'N') AS authResourceYn
+              	</if>
+		FROM ACL_RESOURCE R
+		<where>
+			<if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(searchKwd)">
+				${searchKey} like '%${searchKwd}%'
+			</if>
+		</where>
+	    ORDER BY R.RESOURCE_NM
+		<include refid="pagingLimit"/>
+	</select>
+
+	<select id="getListCnt" resultType="int">
+		/*
+			리소스 리스트 전체 갯수
+			getListCnt
+			org/ezdevgroup/common/persist/acl/resource/ResourceMapper.xml
+		*/
+
+		SELECT COUNT(*)
+		FROM ACL_RESOURCE
+		<where>
+			<if test="@org.ezdevgroup.ezframework.support.util.DataUtils@isNotNull(searchKwd)">
+				${searchKey} like '%${searchKwd}%'
+			</if>
+		</where>
+	</select>
+</mapper>

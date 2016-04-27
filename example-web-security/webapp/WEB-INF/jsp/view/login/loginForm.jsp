@@ -9,7 +9,7 @@
 	</head>
 	<body>
         <form action="<spring:eval expression="@global['page.login.url']" />" method="post" onsubmit="return onSubmitHandler();">
-        <fieldset><legend>조건정보 영역 custom</legend>
+        <fieldset><legend>조건정보 영역</legend>
 
             <div class="user_login_ultop">
                 <ul>

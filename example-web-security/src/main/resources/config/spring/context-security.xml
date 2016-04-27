@@ -97,7 +97,7 @@
 	</beans:bean> -->
 
 
-	<!-- <beans:bean id="ezUserDetailsService" class="org.ezdevgroup.sangdam4u.common.security.Ez4uUserDetailsServiceImpl">	커스텀 인증 -->
+	<!-- <beans:bean id="ezUserDetailsService" class="org.ezdevgroup.common.security.Ez4uUserDetailsServiceImpl">	커스텀 인증 -->
 	<beans:bean id="ezUserDetailsService" class="org.ezdevgroup.ezframework.security.EzUserDetailsServiceImpl">
 		<beans:property name="dataSource" 		ref="dataSource" />
 		<beans:property name="userQuery" 		value="SELECT
