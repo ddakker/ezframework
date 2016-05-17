@@ -12,6 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.servlet.view.AbstractView;
 
 public class MappingJsonpView extends AbstractView {
+	private static ObjectMapper objectMapper = new ObjectMapper();
 
 	public MappingJsonpView() {
 		setContentType("text/javascript");
@@ -30,8 +31,7 @@ public class MappingJsonpView extends AbstractView {
 
 		}
 		String callback = request.getParameter("callback");
-		ObjectMapper om = new ObjectMapper();
-		String json = om.writeValueAsString(outputMap);
+		String json = objectMapper.writeValueAsString(outputMap);
 
 		Writer out = response.getWriter();
 		out.append(callback).append("(").append(json).append(")");
