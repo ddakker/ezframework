@@ -38,8 +38,8 @@ public class WebXml implements WebApplicationInitializer {
 		rootContext.refresh();
 
 
-        GlobalProperties globalsProperties = rootContext.getBean("globalsProperties", GlobalProperties.class);
-        String serverType 	= StringUtils.defaultString(globalsProperties.getProperty("server.type"), "local");
+        GlobalProperties globalProperties = rootContext.getBean("globalProperties", GlobalProperties.class);
+        String serverType 	= StringUtils.defaultString(globalProperties.getProperty("server.type"), "local");
         System.out.println("========== serverType: " + serverType + " ==========");
 
 

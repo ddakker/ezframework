@@ -36,7 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EzController {
 	private Logger log  = LoggerFactory.getLogger(EzController.class);
 
-	@Resource private GlobalProperties globalsProperties;
+	@Resource private GlobalProperties globalProperties;
 
 	/**
 	 * 임시 파일 업로드
@@ -61,7 +61,7 @@ public class EzController {
 			}
 			
 			if (saveFile.exists()) {
-				if ("local".equals(globalsProperties.getProperty("server.type"))) {
+				if ("local".equals(globalProperties.getProperty("server.type"))) {
 					saveFile.delete();
 				} else {
 					throw new Exception("존재하는 파일입니다.");

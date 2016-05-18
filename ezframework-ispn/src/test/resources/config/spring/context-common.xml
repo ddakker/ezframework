@@ -24,7 +24,7 @@
 	</bean>
 
 	<util:properties id="global" location="classpath:/properties/global-properties.xml" />
-	<bean id="globalsProperties" class="org.ezdevgroup.ezframework.web.GlobalsProperties">
+	<bean id="globalProperties" class="org.ezdevgroup.ezframework.web.GlobalsProperties">
 		<constructor-arg index="0">
 			<ref bean="global" />
 		</constructor-arg>

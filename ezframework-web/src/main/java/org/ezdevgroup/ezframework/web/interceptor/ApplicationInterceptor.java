@@ -20,7 +20,7 @@ public class ApplicationInterceptor extends HandlerInterceptorAdapter {
 	private Logger log = LoggerFactory.getLogger(ApplicationInterceptor.class);
 
 	@Resource
-	private GlobalProperties globalsProperties;
+	private GlobalProperties globalProperties;
 
 	/*@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -33,8 +33,8 @@ public class ApplicationInterceptor extends HandlerInterceptorAdapter {
 
 		if (modelAndView != null) {
 			if (org.apache.commons.lang.StringUtils.indexOf(request.getHeader("accept"), "text/html")  == -1) {
-				modelAndView.addObject(globalsProperties.getProperty("content.key.result.code"), globalsProperties.getProperty("content.value.success"));
-				modelAndView.addObject(globalsProperties.getProperty("content.key.result.message"), "");
+				modelAndView.addObject(globalProperties.getProperty("content.key.result.code"), globalProperties.getProperty("content.value.success"));
+				modelAndView.addObject(globalProperties.getProperty("content.key.result.message"), "");
 			}
 		}
 	}

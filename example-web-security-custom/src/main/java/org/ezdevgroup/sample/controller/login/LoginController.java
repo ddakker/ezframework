@@ -19,7 +19,7 @@ import org.ezdevgroup.ezframework.security.EzUserDetailsServiceImpl;
 @Controller
 public class LoginController {
 	@Resource
-	private GlobalProperties globalsProperties;
+	private GlobalProperties globalProperties;
 
 	@Resource
 	private EzUserDetailsServiceImpl ezUserDetailsService;

@@ -40,7 +40,7 @@ public class MultipartHelper {
 	}
 	
 	public static String getUploadTempDir(HttpServletRequest request) {
-		String tempUploadDir = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext()).getBean("globalsProperties", GlobalProperties.class).getProperty("upload.temp.dir");
+		String tempUploadDir = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext()).getBean("globalProperties", GlobalProperties.class).getProperty("upload.temp.dir");
 		if (StringUtils.isEmpty(tempUploadDir)) {
 			throw new RuntimeException("임시 업로드 디렉토리는 globalProperties['upload.temp.dir'] 필수로 설정되어야 합니다.");
 		}

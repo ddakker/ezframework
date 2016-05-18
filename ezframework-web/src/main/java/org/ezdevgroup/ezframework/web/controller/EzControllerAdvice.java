@@ -22,44 +22,44 @@ import org.springframework.web.servlet.ModelAndView;
 public class EzControllerAdvice {
 	private Logger log  = LoggerFactory.getLogger(EzControllerAdvice.class);
 
-	@Resource private GlobalProperties globalsProperties;
+	@Resource private GlobalProperties globalProperties;
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
     public ModelAndView handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-		String viewJspError = globalsProperties.getProperty("view.jsp.error");
-		String contentValueException = globalsProperties.getProperty("content.value.exception");
+		String viewJspError = globalProperties.getProperty("view.jsp.error");
+		String contentValueException = globalProperties.getProperty("content.value.exception");
 		log.error("데이터 저장소 처리중 문제가 발생하였습니다.", ex);
 		log.error("viewJsp: {}, contentValueException: {}", viewJspError, contentValueException);
 		
 		ModelAndView mv = new ModelAndView(viewJspError);
-        mv.addObject(globalsProperties.getProperty("content.key.result.code"), contentValueException);
-        mv.addObject(globalsProperties.getProperty("content.key.result.message"), "데이터 저장소 처리중 문제가 발생하였습니다.");		// DB정보 노출문제
+        mv.addObject(globalProperties.getProperty("content.key.result.code"), contentValueException);
+        mv.addObject(globalProperties.getProperty("content.key.result.message"), "데이터 저장소 처리중 문제가 발생하였습니다.");		// DB정보 노출문제
         return mv;
     }
 
 	@ExceptionHandler(RuntimeException.class)
     public ModelAndView handleRuntimeException(RuntimeException ex) {
-		String viewJspError = globalsProperties.getProperty("view.jsp.error");
-		String contentValueException = globalsProperties.getProperty("content.value.exception");
+		String viewJspError = globalProperties.getProperty("view.jsp.error");
+		String contentValueException = globalProperties.getProperty("content.value.exception");
 		log.error("RuntimeException", ex);
 		log.error("viewJsp: {}, contentValueException: {}",viewJspError, contentValueException);
 		
 		ModelAndView mv = new ModelAndView(viewJspError);
-        mv.addObject(globalsProperties.getProperty("content.key.result.code"), contentValueException);
-        mv.addObject(globalsProperties.getProperty("content.key.result.message"), ex.getMessage());
+        mv.addObject(globalProperties.getProperty("content.key.result.code"), contentValueException);
+        mv.addObject(globalProperties.getProperty("content.key.result.message"), ex.getMessage());
         return mv;
     }
 
 	@ExceptionHandler(Exception.class)
     public ModelAndView handleException(Exception ex) {
-		String viewJspError = globalsProperties.getProperty("view.jsp.error");
-		String contentValueException = globalsProperties.getProperty("content.value.exception");
+		String viewJspError = globalProperties.getProperty("view.jsp.error");
+		String contentValueException = globalProperties.getProperty("content.value.exception");
 		log.error("Exception", ex);
 		log.error("viewJsp: {}, contentValueException: {}",viewJspError, contentValueException);
 		
         ModelAndView mv = new ModelAndView(viewJspError);
-        mv.addObject(globalsProperties.getProperty("content.key.result.code"), contentValueException);
-        mv.addObject(globalsProperties.getProperty("content.key.result.message"), ex.getMessage());
+        mv.addObject(globalProperties.getProperty("content.key.result.code"), contentValueException);
+        mv.addObject(globalProperties.getProperty("content.key.result.message"), ex.getMessage());
         return mv;
     }
 	

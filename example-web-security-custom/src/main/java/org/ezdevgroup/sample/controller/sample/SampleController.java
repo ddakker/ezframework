@@ -47,7 +47,7 @@ public class SampleController {
 	private static Logger log = LoggerFactory.getLogger(SampleController.class);
 
 	@Value("#{global['jdbc.default.driverClassName']}") private String driverClassName;
-	@Resource GlobalProperties globalsProperties;
+	@Resource GlobalProperties globalProperties;
 	@Resource MessageSource messageSource;
 
 
@@ -67,7 +67,7 @@ public class SampleController {
 		log.debug("msg.test1: {}", messageSource.getMessage("msg.test1", null, Locale.getDefault()));
 		log.debug("msg.test2: {}", messageSource.getMessage("msg.test2", new Object[]{"첫번째","두번째"}, Locale.getDefault()));
 
-		log.debug("jdbc.default.driverClassName: {}", globalsProperties.getProperty("jdbc.default.driverClassName"));
+		log.debug("jdbc.default.driverClassName: {}", globalProperties.getProperty("jdbc.default.driverClassName"));
 		log.debug("driverClassName: {}", driverClassName);
 
 
@@ -343,7 +343,7 @@ public class SampleController {
 
 	@RequestMapping(value="/write", method = RequestMethod.POST)
 	public String write(@ModelAttribute SampleDto sampleDto, HttpServletRequest request, Model model) {
-		String uploadDir = globalsProperties.getProperty("upload.dir");
+		String uploadDir = globalProperties.getProperty("upload.dir");
 
 		List<FileItem> fileItemList = MultipartHelper.getUploadFiles(request);
 		for (FileItem fileItem : fileItemList) {
@@ -389,7 +389,7 @@ public class SampleController {
 
 	@RequestMapping(value="/edit", method = RequestMethod.POST)
 	public String edit(@ModelAttribute("params") HashMap<String, String> params, HttpServletRequest request, Model model) {
-		String uploadDir = globalsProperties.getProperty("upload.dir");
+		String uploadDir = globalProperties.getProperty("upload.dir");
 
 		List<FileItem> fileItemList = MultipartHelper.getUploadFiles(request);
 		for (FileItem fileItem : fileItemList) {
