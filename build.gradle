@@ -25,7 +25,9 @@ ext {
 buildscript {
 	repositories {
 		mavenCentral()
+		/*
 		maven { url: mvnRepositorieUrl }
+		*/
 	}
 	dependencies {
 		//classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
@@ -37,10 +39,11 @@ buildscript {
 }
 
 configure(allprojects) { project ->
-	def versionName = "1.0.0"
+	def versionName = "1.0.1"
 	//def versionName = "2.0." + getRevision()
 	if (versionCase == "SNAPSHOT") {
-        versionName = versionName + "." + new Date().format("yyyyMMddHHmmss") + "-" + versionCase
+        //versionName = versionName + "." + new Date().format("yyyyMMddHHmmss") + "-" + versionCase
+        versionName = versionName + "-" + versionCase
 	} else {
         versionName = versionName + "." + versionCase
 	}
@@ -95,6 +98,7 @@ configure(allprojects) { project ->
 
 	repositories {
 		mavenCentral()
+		/*
 		maven {
 			url mvnRepositorieUrl
 			credentials {
@@ -102,6 +106,7 @@ configure(allprojects) { project ->
 				password mvnRepositoriePassword
 			}
 		}
+		*/
 		//github("layerhq", "maven-private", "master", "releases")
     	//git("https://github.com/ddakker/maven_repo.git", "arbitrary.unique.name", "master", "releases")
 	}
@@ -143,14 +148,16 @@ configure(allprojects) { project ->
 	}
 
 	uploadArchives {
-	    repositories.mavenDeployer {
-	    	repository(url: mvnRepositorieReleasesUrl) {
-	            authentication(userName: mvnRepositorieUsername, password: mvnRepositoriePassword)
+		/*
+		repositories.mavenDeployer {
+	        repository(url: mavenRepositoryUrl + "/content/repositories/releases/") {
+	            authentication(userName: mavenUser, password: mavenPassword)
 	        }
-	        snapshotRepository(url: mvnRepositorieSnapshotsUrl) {
-	            authentication(userName: mvnRepositorieUsername, password: mvnRepositoriePassword)
+	        snapshotRepository(url: mavenRepositoryUrl + "/content/repositories/snapshots/") {
+	            authentication(userName: mavenUser, password: mavenPassword)
 	        }
 	    }
+	    */
 	}
 
 	task sourcesJar(type: Jar, dependsOn:classes) {
