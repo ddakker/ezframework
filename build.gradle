@@ -37,7 +37,7 @@ buildscript {
 }
 
 configure(allprojects) { project ->
-	def versionName = "1.0.0"
+	def versionName = "1.0.2"
 	//def versionName = "2.0." + getRevision()
 	if (versionCase == "SNAPSHOT") {
         versionName = versionName + "." + new Date().format("yyyyMMddHHmmss") + "-" + versionCase
@@ -204,7 +204,7 @@ project("ezframework-web") {
 
 
 		compile 'org.aspectj:aspectjweaver:1.7.4'
-		//compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$fasterxmlJacksonVersion"
+		compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$fasterxmlJacksonVersion"
 		compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.11'
 
 		compile 'xom:xom:1.0'
