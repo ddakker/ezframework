@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<!-- real -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/data/webroot/logs/sample/app.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/data/webroot/logs/sample/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>90</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d [%-5level] [%thread] %logger{100}[%method:%line] - %msg %n</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- Class Method 이동 경로 정보 -->
+	<logger name="org.ezdevgroup.ezframework.intercepter.aspect.LoggingAspect" level="DEBUG" />
+
+	<logger name="org.springframework.beans.factory.support.DefaultListableBeanFactory" level="ERROR" />
+	<logger name="org.springframework.security.util.FilterChainProxy" level="ERROR" />
+	<logger name="org.springframework.security.context.HttpSessionContextIntegrationFilter" level="ERROR" />
+	<logger name="org.springframework.security.wrapper.SavedRequestAwareWrapper" level="ERROR" />
+	<logger name="org.springframework.jdbc.datasource.DataSourceUtils" level="ERROR" />
+	<logger name="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" level="ERROR" />
+	<logger name="org.springframework.core.io.support.PathMatchingResourcePatternResolver" level="ERROR" />
+	<logger name="org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider" level="ERROR" />
+	<logger name="org.springframework.core.io.support.PathMatchingResourcePatternResolver" level="ERROR" />
+	<logger name="org.springframework.beans.factory.xml.PluggableSchemaResolver" level="ERROR" />
+	<logger name="org.springframework.aop.framework.CglibAopProxy" level="ERROR" />
+	<logger name="org.springframework.web.context.support.StandardServletEnvironment" level="ERROR" />
+	<logger name="org.springframework.security.web.FilterChainProxy" level="ERROR" />
+    <logger name="org.springframework.beans.factory.annotation.InjectionMetadata" level="ERROR" />
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="ERROR" />
+    <logger name="org.mybatis.spring.SqlSessionUtils" level="ERROR" />
+
+
+	<logger name="jdbc.sqltiming" level="ERROR" />
+	<logger name="jdbc.resultset" level="ERROR" />
+	<logger name="jdbc.audit" level="ERROR" />
+
+
+
+
+	<root level="ERROR">
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>

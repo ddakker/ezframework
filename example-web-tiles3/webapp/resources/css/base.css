@@ -1,0 +1,5 @@
+@charset "utf-8";
+
+#divPaging .num { border-left: 1px solid #ddd; padding-left: 6px; padding-right: 6px; }
+#divPaging .curr { font-weight: bold; }
+#divPaging a { text-decoration: none; color: #666 }

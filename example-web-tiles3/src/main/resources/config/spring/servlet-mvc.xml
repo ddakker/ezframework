@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+					        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+					        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+					        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+					        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+	<!-- 환경설정 기본정보를 globals.properties 에서 참조하도록 propertyConfigurer 설정  -->
+	<bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:properties/global-properties.xml</value>
+            </list>
+        </property>
+    </bean>
+
+	<mvc:annotation-driven />
+
+    <context:component-scan base-package="org.ezdevgroup">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+    </context:component-scan>
+
+    <mvc:interceptors>
+    	<!-- 공통 인터셉터 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="org.ezdevgroup.ezframework.web.interceptor.ApplicationInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/sample/**" location="/sample/" />
+	<mvc:resources mapping="/**/*.html" location="/"/>
+
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="1"></property>
+	    <property name="contentNegotiationManager">
+	        <bean class="org.springframework.web.accept.ContentNegotiationManager">
+	        	<constructor-arg>
+		            <bean class="org.springframework.web.accept.HeaderContentNegotiationStrategy" />
+	            </constructor-arg>
+	        </bean>
+	    </property>
+	    <property name="viewResolvers">
+            <list>
+                <bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+	                <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
+	                <property name="order" value="0"></property>
+	            </bean>
+	            <!-- 레이어 팝업시 Tiles 반영되지 않는 레이어팝업 jsp가 필요  -->
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			    	<property name="order" value="2" />
+			        <property name="prefix" value="/WEB-INF/jsp/view/"/>
+			        <property name="suffix" value=".jsp"/>
+			    </bean>
+            </list>
+        </property>
+	    <property name="defaultViews">
+	        <list>
+	        	<!-- JSON View -->
+	            <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
+	            <!-- JSONP View -->
+	            <bean class="org.ezdevgroup.ezframework.web.servlet.view.json.MappingJsonpView" />
+
+	            <!-- XML View -->
+	            <!-- <bean class="com.ezwel.core.framework.web.servlet.view.xml.MappingXmlView" /> -->
+	        </list>
+	    </property>
+	</bean>
+
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+    	<!-- // completeAutoload 프로퍼티의 값을 true로 설정하면 tiles 설정파일에서 EL, REGEXP를 사용할 수 있다 (pom 에서  tiles-extras, tiles-el 를 추가해야한다.)
+        <property name="completeAutoload"          value="true"/>
+        -->
+        <property name="useMutableTilesContainer"  value="true" />
+        <property name="checkRefresh"              value="true" />
+
+        <property name="definitions">
+            <list>
+                <value>classpath:/config/tiles/tiles-*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <aop:aspectj-autoproxy />
+
+	<bean id="loggingAspect" class="org.ezdevgroup.ezframework.web.interceptor.aspect.LoggingAspect" />
+
+	<aop:config proxy-target-class="true">
+
+		<aop:aspect id="aspectLoggging" ref="loggingAspect">
+			<aop:pointcut id="controllerPointcut" expression="execution(* org.ezdevgroup..*Controller.*(..))" />
+			<aop:around method="controllerAround" pointcut-ref="controllerPointcut"  />
+		</aop:aspect>
+
+
+	</aop:config>
+</beans>
