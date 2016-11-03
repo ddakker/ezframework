@@ -35,6 +35,7 @@ war {
 
 repositories {
 	mavenCentral()
+	/*
 	maven {
 		url mvnRepositorieUrl
 		credentials {
@@ -42,6 +43,7 @@ repositories {
 			password mvnRepositoriePassword
 		}
 	}
+	*/
 }
 
 dependencies {
@@ -54,15 +56,7 @@ dependencies {
 	compile "org.ezdevgroup:ezframework-ispn:$ezframeworkVersion"
 	compile "org.ezdevgroup:ezframework-rabbitmq:$ezframeworkVersion"
 
-	/*
-	compile project(':ezframework-web')
-	compile project(':ezframework-support')
-	compile project(':ezframework-tag')
-	compile project(':ezframework-security')
-	compile project(':ezframework-ehcache')
-	compile project(':ezframework-ispn')
-	compile project(':ezframework-rabbitmq')
-	*/
+
 	compile 'com.h2database:h2:+'
 	compile 'org.hsqldb:hsqldb:2.3.3'
 
