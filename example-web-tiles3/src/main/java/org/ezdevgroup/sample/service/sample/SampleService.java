@@ -31,13 +31,17 @@ public class SampleService {
 	public EzMap getSample(Map<String, String> params) {
 		return sampleMapper.getSample(params);
 	}
-	
+
 	public EzMap getSample(Integer seq) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("seq", String.valueOf(seq));
 		return sampleMapper.getSample(params);
 	}
-	
+
+	public int getSampleListSize(Map<String, Object> params) {
+		return sampleMapper.getSampleListSize(params);
+	}
+
 	public List<EzMap> getSampleListJava(SampleDto sampleDto) {
 		return sampleMapper.getSampleListJava(sampleDto);
 	}
@@ -45,15 +49,15 @@ public class SampleService {
 	public List<EzMap> getSampleListXml(SampleDto sampleDto) {
 		return sampleMapper.getSampleListXml(sampleDto);
 	}
-	
+
 	public List<TestVo> getSampleListVo(SampleDto sampleDto) {
 		return sampleMapper.getSampleListVo(sampleDto);
 	}
-	
+
 	public List<Map<String, Object>> getSampleListHashMap(SampleDto sampleDto) {
 		return sampleMapper.getSampleListHashMap(sampleDto);
 	}
-	
+
 	public Paging<EzMap> getSampleList(SampleDto sampleDto) {
 		Paging<EzMap> paging = new Paging<EzMap>();
 
@@ -63,7 +67,7 @@ public class SampleService {
 
 		return paging;
 	}
-	
+
 	public List<EzMap> getSampleDesc(Integer seq) {
 		return sampleMapper.getSampleDesc(seq);
 	}
@@ -71,12 +75,16 @@ public class SampleService {
 	public int modifySample(SampleDto sampleDto) {
 		return sampleMapper.modifySample(sampleDto);
 	}
-	
+
 	public int addSample(SampleDto sampleDto) {
 		int changeCnt = sampleMapper.addSampleWithSelectKey(sampleDto);
 		return changeCnt;
 	}
-	
+
+	public int addSample(Map<String, Object> params) {
+		return sampleMapper.addSample(params);
+	}
+
 	public int serviceTranCommitTest(SampleDto sampleDto) {
 		logService.log("[Service] 함수 이전" + sampleDto.getName());
 		int changeCnt = sampleMapper.addSample(sampleDto);
@@ -109,4 +117,16 @@ public class SampleService {
 		}
 	}
 
+	public void serviceTranTest(Map<String, Object> params) {
+		logService.log((String) params.get("email"));
+
+		int addCnt = this.addSample(params);
+		log.debug("addCnt: {}", addCnt);
+
+		logService.log((String) params.get("email"));
+
+		if( true ){
+			throw new RuntimeException("강제 에러");
+		}
+	}
 }

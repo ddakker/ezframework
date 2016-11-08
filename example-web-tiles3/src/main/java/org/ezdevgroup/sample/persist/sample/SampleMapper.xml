@@ -135,7 +135,7 @@
 		</where>
 	</select>
 
-	<update id="addSample">
+	<insert id="addSample">
 		/*
 			등록
 			addSample
@@ -148,7 +148,7 @@
 			#{name}
 			, #{email}
 		)
-	</update>
+	</insert>
 
 	<insert id="addSampleWithSelectKey" useGeneratedKeys="true">
 		<selectKey resultType="int" keyProperty="seq" order="BEFORE">

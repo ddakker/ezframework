@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.annotations.Param;
 import org.ezdevgroup.sample.domain.EzMap;
 import org.ezdevgroup.sample.persist.log.LogMapper;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,9 @@ public class LogService {
 
 	public List<EzMap> getLogs() {
 		return logMapper.getLogs();
+	}
+
+	public int getLogCnt(@Param("msg") String msg) {
+		return logMapper.getLogCnt(msg);
 	}
 }

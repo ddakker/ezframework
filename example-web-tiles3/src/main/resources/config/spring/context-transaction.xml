@@ -18,7 +18,7 @@
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
 			<tx:method name="*" rollback-for="Exception" />
-			<tx:method name="log" rollback-for="Exception" propagation="NOT_SUPPORTED" />
+			<tx:method name="log*" rollback-for="Exception" propagation="NOT_SUPPORTED" />
 			<tx:method name="get*" read-only="true" />
 			<tx:method name="is*" read-only="true" />
 			<tx:method name="list*" read-only="true" />

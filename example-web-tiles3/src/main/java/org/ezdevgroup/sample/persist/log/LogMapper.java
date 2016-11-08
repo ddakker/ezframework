@@ -14,4 +14,7 @@ public interface LogMapper {
 
 	@Select("SELECT SEQ, MSG, REG_DT FROM EZ_LOG ORDER BY SEQ DESC")
 	public List<EzMap> getLogs();
+
+	@Select("SELECT COUNT(*) FROM EZ_LOG WHERE msg = #{msg}")
+	public int getLogCnt(@Param("msg") String msg);
 }
