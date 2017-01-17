@@ -29,6 +29,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.config.SocketConfig;
@@ -218,19 +220,25 @@ public class HttpClient {
 		return cookies;
 	}
 	
-
 	public void setCookies(Cookie [] cookieArr) {
+		setCookies(cookieArr, null, null);
+	}
+	public void setCookies(Cookie [] cookieArr, String domain, String path) {
 		this.cookies = new BasicCookieStore();
 		
 		if (cookieArr != null) {
 			for (Cookie c : cookieArr) {
-				BasicClientCookie cookie = new BasicClientCookie(c.getName(), c.getValue());
-				cookie.setDomain(c.getDomain());
-				cookie.setPath(c.getPath());
-				cookie.setComment(c.getComment());
-				cookie.setSecure(c.getSecure());
-				cookie.setVersion(c.getVersion());
-				this.cookies.addCookie(cookie);
+				log.debug("set cookie: {}={} domain: {}, path: {}", c.getName(), c.getValue(), c.getDomain(), c.getPath());
+				if (!"JSESSIONID".equals(c.getName())) {
+					BasicClientCookie cookie = new BasicClientCookie(c.getName(), c.getValue());
+					cookie.setDomain(c.getDomain()==null?domain:c.getDomain());
+					//cookie.setDomain(".kuh.ac.kr");
+					cookie.setPath(c.getPath()==null?path:c.getPath());
+					//cookie.setComment(c.getComment());
+					//cookie.setSecure(c.getSecure());
+					//cookie.setVersion(c.getVersion());
+					this.cookies.addCookie(cookie);
+				}
 			}
 		}
 		/*Iterator<String> it = cookies.keySet().iterator();
@@ -296,18 +304,21 @@ public class HttpClient {
 		String jsseEnableSNIExtension = null;
 		try {
 			if (httpClient == null) {
-				log.debug("poolingHttpClientConnectionManager1: {}", poolingHttpClientConnectionManager);
 				HttpClientBuilder httpClientBuilder = HttpClientBuilder.create().setConnectionManager(poolingHttpClientConnectionManager==null?defaultPoolingHttpClientConnectionManager:poolingHttpClientConnectionManager);
-				log.debug("poolingHttpClientConnectionManager2: {}", (poolingHttpClientConnectionManager==null?defaultPoolingHttpClientConnectionManager:poolingHttpClientConnectionManager));
 				if (isSSL(url)) {
 					jsseEnableSNIExtension = System.getProperty("jsse.enableSNIExtension");
 					System.setProperty("jsse.enableSNIExtension", "false");
 				}
 				
+				if (cookies != null) {
+					log.debug("setDefaultCookieStore: {}", cookies);
+					httpClientBuilder = httpClientBuilder.setDefaultCookieStore(cookies);
+				}
 				httpClient = httpClientBuilder.build();
 			}
-			HttpContext localContext = new BasicHttpContext();
-		    localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookies);
+			//HttpContext localContext = new BasicHttpContext();
+			//log.debug("setAttribute cookies: {}", cookies);
+		    //localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookies);
 			
 			List<NameValuePair> nvps 	= new ArrayList <NameValuePair>();
 			String messageBodyJsonStr	= null;
@@ -373,8 +384,10 @@ public class HttpClient {
 				httpRequest.setHeader("Authorization", "Basic " + Base64.encodeBase64String((credentials.getUserName()+":"+credentials.getPassword()).getBytes()));
 			}
 			
-
-			HttpResponse httpResponse = httpClient.execute(httpRequest, localContext);
+			//httpClient.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY);
+			//httpRequest.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.IGNORE_COOKIES);
+			//HttpResponse httpResponse = httpClient.execute(httpRequest, localContext);
+			HttpResponse httpResponse = httpClient.execute(httpRequest);
 			if (httpResponse != null) {
 				statusCode = httpResponse.getStatusLine().getStatusCode();
 				if (statusCode == 302) {
