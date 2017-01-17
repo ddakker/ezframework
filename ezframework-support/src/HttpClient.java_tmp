@@ -229,16 +229,16 @@ public class HttpClient {
 		if (cookieArr != null) {
 			for (Cookie c : cookieArr) {
 				log.debug("set cookie: {}={} domain: {}, path: {}", c.getName(), c.getValue(), c.getDomain(), c.getPath());
-				if (!"JSESSIONID".equals(c.getName())) {
-					BasicClientCookie cookie = new BasicClientCookie(c.getName(), c.getValue());
-					cookie.setDomain(c.getDomain()==null?domain:c.getDomain());
-					//cookie.setDomain(".kuh.ac.kr");
-					cookie.setPath(c.getPath()==null?path:c.getPath());
-					//cookie.setComment(c.getComment());
-					//cookie.setSecure(c.getSecure());
-					//cookie.setVersion(c.getVersion());
-					this.cookies.addCookie(cookie);
-				}
+
+				BasicClientCookie cookie = new BasicClientCookie(c.getName(), c.getValue());
+				cookie.setDomain(c.getDomain()==null?domain:c.getDomain());
+				//cookie.setDomain(".kuh.ac.kr");
+				cookie.setPath(c.getPath()==null?path:c.getPath());
+				//cookie.setComment(c.getComment());
+				//cookie.setSecure(c.getSecure());
+				//cookie.setVersion(c.getVersion());
+				this.cookies.addCookie(cookie);
+
 			}
 		}
 		/*Iterator<String> it = cookies.keySet().iterator();
