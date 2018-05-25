@@ -5,10 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HeaderElement;
@@ -25,16 +31,21 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.ezdevgroup.ezframework.support.util.JsonUtils;
@@ -87,14 +98,14 @@ public class EzHttpClient {
 	private PoolingHttpClientConnectionManager	poolingHttpClientConnectionManager;
 
 	private String				url				= "";
-	private String				mothod 			= EzHttpClient.POST;
+	private String				method 			= EzHttpClient.GET;
 	private Map<String, Object> params;
 	private Object				body;
 
 	private String				charset				= CHARSET_UTF_8;
 	private String				accept				= null;
 	private String				contentType			= null;
-	private String				dataType			= HTML; 
+	private String				dataType			= HTML;
 
 
 	private CookieStore 		cookies;
@@ -114,8 +125,8 @@ public class EzHttpClient {
 		this.url = url;
 	}
 
-	public void setMothod(String mothod) {
-		this.mothod = mothod;
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 	/**
@@ -189,7 +200,7 @@ public class EzHttpClient {
 	public void setHeaders(Map<String, String> headers) {
 		this.headers = headers;
 	}
-	
+
 	public UsernamePasswordCredentials getCredentials() {
 		return credentials;
 	}
@@ -219,7 +230,7 @@ public class EzHttpClient {
 		}
 		if (body != null && params != null) throw new RuntimeException("RequestBody, Parameter 중 한가지만 보낼 수 있습니다.");
 		if (dataType == null)				throw new RuntimeException("dataType is null");
-		
+
 		if (JSON.equals(dataType.toLowerCase()) || JSONP.equals(dataType.toLowerCase())) {
 			if (accept == null) {
 				accept = CONTENT_JSON;
@@ -238,17 +249,27 @@ public class EzHttpClient {
 		try {
 			if (httpClient == null) {
 				log.debug("url {}", url);
-				HttpClientBuilder httpClientBuilder = HttpClientBuilder.create().setConnectionManager(poolingHttpClientConnectionManager);
+				/*HttpClientBuilder httpClientBuilder = HttpClientBuilder.create().setConnectionManager(poolingHttpClientConnectionManager);
 				if (isSSL(url)) {
 					jsseEnableSNIExtension = System.getProperty("jsse.enableSNIExtension");
 					System.setProperty("jsse.enableSNIExtension", "false");
 				}
-				
+
+				httpClient = httpClientBuilder.build();*/
+
+				HttpClientBuilder httpClientBuilder = HttpClients.custom().setConnectionManager(poolingHttpClientConnectionManager);
+				if (isSSL(url)) {
+					SSLContext sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
+					HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+			        SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
+
+			        httpClientBuilder.setSSLSocketFactory(connectionFactory);
+				}
 				httpClient = httpClientBuilder.build();
 			}
 			HttpContext localContext = new BasicHttpContext();
 		    localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookies);
-			
+
 			List<NameValuePair> nvps 	= new ArrayList <NameValuePair>();
 			String messageBodyJsonStr	= null;
 
@@ -281,7 +302,7 @@ public class EzHttpClient {
 				}
 			}
 
-			if (mothod.equals(EzHttpClient.GET) ){
+			if (method.equals(EzHttpClient.GET) ){
 				if (!nvps.isEmpty()) {
 					url += "?" + URLEncodedUtils.format(nvps, charset);
 				}
@@ -290,7 +311,7 @@ public class EzHttpClient {
 				httpGet.setURI(new URI(url));
 
 				httpRequest = httpGet;
-			} else if (mothod.equals(EzHttpClient.POST) ){
+			} else if (method.equals(EzHttpClient.POST) ){
 				HttpPost httpPost = new HttpPost(url);
 				httpPost.setURI(new URI(url));
 
@@ -320,7 +341,7 @@ public class EzHttpClient {
 			if (credentials != null) {
 				httpRequest.setHeader("Authorization", "Basic " + Base64.encodeBase64String((credentials.getUserName()+":"+credentials.getPassword()).getBytes()));
 			}
-			
+
 
 			HttpResponse httpResponse = httpClient.execute(httpRequest, localContext);
 			if (httpResponse != null) {
@@ -329,7 +350,7 @@ public class EzHttpClient {
 					resultString = httpResponse.getFirstHeader("Location").getValue();
 				} else {
 					resultString = EntityUtils.toString(httpResponse.getEntity());
-					
+
 					if (encryption != null && encryption.isOutputDecode() == true) {
 						resultString = encryption.decode(resultString);
 					}
@@ -362,7 +383,7 @@ public class EzHttpClient {
 				}
 			}
 
-		} catch (URISyntaxException | IOException e) {
+		} catch (URISyntaxException | IOException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
 			log.error("HttpClient Call Fail {}", e);
 		} finally {
 			if (jsseEnableSNIExtension != null && isSSL(url)) {
@@ -390,7 +411,7 @@ public class EzHttpClient {
 	public Document getResultDOM() {
 		return null;
 	}
-	
+
 	private boolean isSSL(String url) {
 		return (url != null && url.indexOf("https") == 0)?true:false;
 	}

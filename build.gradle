@@ -25,7 +25,7 @@ ext {
 buildscript {
 	repositories {
 		mavenCentral()
-		maven { url: mvnRepositorieUrl }
+		/*maven { url: mvnRepositorieUrl }*/
 	}
 	dependencies {
 		//classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
@@ -95,13 +95,13 @@ configure(allprojects) { project ->
 
 	repositories {
 		mavenCentral()
-		maven {
+		/*maven {
 			url mvnRepositorieUrl
 			credentials {
 				username mvnRepositorieUsername
 				password mvnRepositoriePassword
 			}
-		}
+		}*/
 		//github("layerhq", "maven-private", "master", "releases")
     	//git("https://github.com/ddakker/maven_repo.git", "arbitrary.unique.name", "master", "releases")
 	}
@@ -142,7 +142,7 @@ configure(allprojects) { project ->
 		testCompile "org.hamcrest:hamcrest-all:1.3"
 	}
 
-	uploadArchives {
+	/*uploadArchives {
 	    repositories.mavenDeployer {
 	    	repository(url: mvnRepositorieReleasesUrl) {
 	            authentication(userName: mvnRepositorieUsername, password: mvnRepositoriePassword)
@@ -151,7 +151,7 @@ configure(allprojects) { project ->
 	            authentication(userName: mvnRepositorieUsername, password: mvnRepositoriePassword)
 	        }
 	    }
-	}
+	}*/
 
 	task sourcesJar(type: Jar, dependsOn:classes) {
 	    classifier = 'sources'
@@ -238,7 +238,7 @@ project("ezframework-support") {
 		compile project(':ezframework-web')
 
 		compile "commons-lang:commons-lang:$commonsLangVersion"
-		compile 'org.apache.httpcomponents:httpclient:4.3.5'
+		compile 'org.apache.httpcomponents:httpclient:4.5.5'
 		//compile 'javamail:javamail:1.4.7'
 	}
 }

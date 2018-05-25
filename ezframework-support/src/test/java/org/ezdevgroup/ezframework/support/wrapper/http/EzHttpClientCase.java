@@ -135,7 +135,7 @@ public class EzHttpClientCase {
 
 		EzHttpClient http = new EzHttpClient();
 		http.setUrl("http://localhost:8080/sample/messageBody");
-		http.setMothod(EzHttpClient.POST);
+		http.setMethod(EzHttpClient.POST);
 		http.setContentType(EzHttpClient.CONTENT_JSON);
 		http.setAccept(EzHttpClient.CONTENT_JSON);
 		http.setBody(bodyDataParam);	// HashMap도 가능
@@ -170,7 +170,7 @@ public class EzHttpClientCase {
 
 		http.setUrl("http://localhost:8080/sample");
 
-		http.setMothod(EzHttpClient.GET);
+		http.setMethod(EzHttpClient.GET);
 		//http.setContentType(EzHttpClient.CONTENT_JSON);
 		//http.setAccept(EzHttpClient.CONTENT_JSON);
 		http.setDataType(EzHttpClient.JSON);
