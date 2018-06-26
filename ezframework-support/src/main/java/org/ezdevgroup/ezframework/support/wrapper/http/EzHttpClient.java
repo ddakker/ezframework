@@ -8,20 +8,13 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HeaderElement;
-import org.apache.http.HeaderElementIterator;
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
@@ -113,6 +106,8 @@ public class EzHttpClient {
 	private UsernamePasswordCredentials credentials	= null;
 
 
+	private Map<String, String>	responseHeaders;
+	private CookieStore 		responseCookies;
 	private String				resultString;
 
 	private Encryption			encryption		= null;
@@ -357,29 +352,35 @@ public class EzHttpClient {
 				}
 
 
-				if (cookies == null) {
-					cookies = new BasicCookieStore();
+				Header responseHeaderArr [] = httpResponse.getAllHeaders();
+				if (responseHeaderArr != null) {
+					responseHeaders = new HashMap<String, String>();
+					for (Header responseHeader : responseHeaderArr) {
+						responseHeaders.put(responseHeader.getName(), responseHeader.getValue());
+					}
 				}
 
+				responseCookies = new BasicCookieStore();
 				HeaderElementIterator it = new BasicHeaderElementIterator(httpResponse.headerIterator("Set-Cookie"));
 				int i = 0;
 				while (it.hasNext()) {
-				    HeaderElement elem = it.nextElement();
-				    BasicClientCookie responseCookie = new BasicClientCookie(elem.getName(), elem.getValue());
-				    NameValuePair[] params = elem.getParameters();
-				    for (NameValuePair param : params) {
-				        for (Method m : responseCookie.getClass().getMethods()) {
-				        	if (m.getName().indexOf("set") == 0 && m.getName().toLowerCase().indexOf(param.getName()) == 3) {
-				        		try {
+					HeaderElement elem = it.nextElement();
+					BasicClientCookie responseCookie = new BasicClientCookie(elem.getName(), elem.getValue());
+					NameValuePair[] params = elem.getParameters();
+					for (NameValuePair param : params) {
+						for (Method m : responseCookie.getClass().getMethods()) {
+							if (m.getName().indexOf("set") == 0 && m.getName().toLowerCase().indexOf(param.getName()) == 3) {
+								try {
+									log.debug("cookie value: {}", param.getValue());
 									m.invoke(responseCookie, param.getValue());
-								} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+								} catch (Exception e) {
 									log.error("{}", e);
 								}
-				        		break;
-				        	}
-					    }
-				    }
-				    cookies.addCookie(responseCookie);
+								break;
+							}
+						}
+					}
+					responseCookies.addCookie(responseCookie);
 				}
 			}
 
@@ -392,6 +393,14 @@ public class EzHttpClient {
 		}
 
 		return statusCode;
+	}
+
+	public Map<String, String> getResponseHeaders() {
+		return responseHeaders;
+	}
+
+	public CookieStore getResponseCookies() {
+		return responseCookies;
 	}
 
 	public String getResultString() {
