@@ -29,6 +29,7 @@
     <logger name="org.springframework.beans.factory.annotation.InjectionMetadata" level="ERROR" />
     <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="ERROR" />
     <logger name="org.mybatis.spring.SqlSessionUtils" level="ERROR" />
+    <logger name="org.apache.commons.digester" level="ERROR" />
 
 	<logger name="jdbc.sqltiming" level="ERROR" />
 	<logger name="jdbc.resultset" level="ERROR" />

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.ezdevgroup.ezframework.web.GlobalProperties;
@@ -406,5 +407,33 @@ public class SampleController {
 		return "redirect:/sample/edit/form";
 	}
 
+	@RequestMapping(value="/session/test")
+	public void sessionTest1(@RequestParam Map<String, String> params, HttpSession session, Model model) {
+
+		log.debug("params: {}", params);
+
+		log.info("test1: {}", sampleService.getTest1());
+		log.info("test2: {}", sampleService.getTest2());
+
+		log.info("session get userId: " + session.getAttribute("id"));
+
+	}
+
+	@RequestMapping(value="/session/login")
+	public void sessionTestLogin(@RequestParam Map<String, String> params, HttpSession session, Model model) {
+
+		log.debug("params: {}", params);
+
+		session.setAttribute("id", params.get("id"));
+
+	}
+	@RequestMapping(value="/session/logout")
+	public void sessionTestLogout(@RequestParam Map<String, Object> params, HttpSession session, Model model) {
+
+		log.debug("params: {}", params);
+
+		session.invalidate();
+
+	}
 }
 

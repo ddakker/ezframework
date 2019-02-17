@@ -59,6 +59,11 @@ public class WebXml implements WebApplicationInitializer {
         multipart.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 
 
+        DelegatingFilterProxy springSessionRepositoryFilter = new DelegatingFilterProxy();
+        FilterRegistration.Dynamic springSessionRepository = servletContext.addFilter("springSessionRepositoryFilter", springSessionRepositoryFilter);
+        springSessionRepository.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR), true, "/*");
+
+
         // String Security 설정
         /*DelegatingFilterProxy springSecurityFilterChain = new DelegatingFilterProxy();
         FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSecurityFilterChain", springSecurityFilterChain);

@@ -35,13 +35,18 @@ war {
 
 
 repositories {
+	mavenLocal()
 	mavenCentral()
-	maven {
+	/*maven {
 		url mvnRepositorieUrl
-	}
+	}*/
+	/*maven {
+		url uri('D:/Java/mvn-repo')
+	}*/
 }
 
 dependencies {
+	compile group: 'org.springframework.session', name: 'spring-session-jdbc', version: '2.0.9.RELEASE'
 
 	compile "org.ezdevgroup:ezframework-web:$ezframeworkVersion"
 	compile "org.ezdevgroup:ezframework-support:$ezframeworkVersion"

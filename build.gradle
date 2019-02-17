@@ -1,21 +1,21 @@
 ext {
     javaVersion 				= '1.7'
     javaEncoding 				= 'UTF-8'
-	springVersion 				= '4.2.5.RELEASE'
-	springSecurityVersion 		= '3.2.9.RELEASE'
+	springVersion 				= '4.3.22.RELEASE'
+	springSecurityVersion 		= '3.2.10.RELEASE'
 	infinispanVersion			= '7.2.5.Final'
 	infinispanSpringVersion		= '7.2.5.Final'
 	infinispanJdgVersion		= '6.1.1.Final-redhat-5'
 	infinispanJdgSpringVersion	= '6.0.2.Final'
-	fasterxmlJacksonVersion		= '2.4.4'
+	fasterxmlJacksonVersion		= '2.8.11'
 	ezmorphVersion				= '1.0.6'
 	commonsLangVersion			= '2.6'
 	commonsBeanutilsVersion		= '1.9.1'
 	commonsCollectionsVersion	= '3.2.1'
 	commonsIoVersion			= '2.4'
 	commonsFileuploadVersion	= '1.3.1'
-	mybatisVersion				= '3.4.0'
-	mybatisSpringVersion		= '1.3.0'
+	mybatisVersion				= '3.4.6'
+	mybatisSpringVersion		= '1.3.2'
 	springRabbitVersion 		= '1.5.5.RELEASE'
 	gradleVersion				= '2.12'
 	targetServer 				= project.hasProperty('target') ? project.getProperty('target') : 'local'
@@ -276,6 +276,8 @@ project("ezframework-ehcache") {
 	dependencies {
 		compile project(':ezframework-web')
 		compile 'net.sf.ehcache:ehcache-core:2.6.9'
+
+		testCompile "org.springframework:spring-test:$springVersion"
 	}
 }
 
@@ -295,6 +297,8 @@ project("ezframework-ispn") {
 		compile "org.infinispan:infinispan-core:$infinispanVersion"
 		compile "org.infinispan:infinispan-client-hotrod:$infinispanVersion"
 		compile "org.infinispan:infinispan-spring4:$infinispanSpringVersion"
+
+		testCompile "org.springframework:spring-test:$springVersion"
 	}
 }
 

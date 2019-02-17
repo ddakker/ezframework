@@ -11,6 +11,7 @@
 
 	<jdbc:embedded-database id="dataSource" type="HSQL">
 		<jdbc:script location="classpath:init-h2.sql" execution="INIT" />
+		<jdbc:script location="classpath:init-spring-session-h2.sql" execution="INIT" />
 	</jdbc:embedded-database>
 	<!-- <bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -30,5 +31,6 @@
 		<property name="mapperLocations" value="classpath:org/ezdevgroup/**/*Mapper.xml" />
 	</bean>
     <mybatis:scan base-package="org.ezdevgroup" factory-ref="sqlSessionFactory" />
+
 
 </beans>

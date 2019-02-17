@@ -1,21 +1,20 @@
 package org.ezdevgroup.sample.service.sample;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import org.ezdevgroup.ezframework.web.vo.Paging;
 import org.ezdevgroup.sample.domain.EzMap;
 import org.ezdevgroup.sample.domain.entity.TestVo;
 import org.ezdevgroup.sample.persist.sample.SampleMapper;
+import org.ezdevgroup.sample.persist.session.SessionTestMapper;
 import org.ezdevgroup.sample.service.log.LogService;
 import org.ezdevgroup.sample.service.sample.dto.SampleDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import org.ezdevgroup.ezframework.web.vo.Paging;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class SampleService {
@@ -23,6 +22,7 @@ public class SampleService {
 
 	@Resource SampleMapper 	sampleMapper;
 	@Resource LogService 	logService;
+	@Resource SessionTestMapper sessionTestMapper;
 
 	public List<EzMap> getSampleOneToOne() {
 		return sampleMapper.getSampleOneToOne();
@@ -128,5 +128,13 @@ public class SampleService {
 		if( true ){
 			throw new RuntimeException("강제 에러");
 		}
+	}
+
+	public List<EzMap> getTest1() {
+		return sessionTestMapper.test1();
+	}
+
+	public List<EzMap> getTest2() {
+		return sessionTestMapper.test2();
 	}
 }

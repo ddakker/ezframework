@@ -14,6 +14,8 @@ import org.ezdevgroup.ezframework.web.GlobalProperties;
 import net.sf.log4jdbc.Log4jdbcProxyDataSource;
 import net.sf.log4jdbc.tools.Log4JdbcCustomFormatter;
 import net.sf.log4jdbc.tools.LoggingType;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 @ImportResource("classpath:config/spring/context-*.xml")
 @Configuration
@@ -57,4 +59,13 @@ public class ApplicationContext {
 
 	    return dataSource;
 	}*/
+
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setCookieName("JSESSIONID");
+        serializer.setCookiePath("/");
+        serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+        return serializer;
+    }
 }
