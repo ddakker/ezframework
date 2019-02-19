@@ -419,20 +419,30 @@ public class SampleController {
 
 	}
 
-	@RequestMapping(value="/session/login")
-	public void sessionTestLogin(@RequestParam Map<String, String> params, HttpSession session, Model model) {
+	@RequestMapping(value="/session")
+	public String sessionTest(Model model) {
+
+		return "sample/session";
+	}
+
+	@RequestMapping(value="/session/add")
+	public String sessionTestAdd(@RequestParam Map<String, String> params, HttpSession session, Model model) {
 
 		log.debug("params: {}", params);
 
-		session.setAttribute("id", params.get("id"));
+		session.setAttribute(params.get("key"), params.get("value"));
 
+		return "redirect:/sample/session";
 	}
+
 	@RequestMapping(value="/session/logout")
-	public void sessionTestLogout(@RequestParam Map<String, Object> params, HttpSession session, Model model) {
+	public String sessionTestLogout(@RequestParam Map<String, Object> params, HttpSession session, Model model) {
 
 		log.debug("params: {}", params);
 
 		session.invalidate();
+
+		return "redirect:/sample/session";
 
 	}
 }
