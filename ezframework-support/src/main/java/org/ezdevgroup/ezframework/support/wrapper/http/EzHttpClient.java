@@ -19,6 +19,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -30,6 +31,7 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -86,9 +88,9 @@ public class EzHttpClient {
 	public static final String JSON 			= "json";
 	public static final String JSONP 			= "jsonp";
 
-	private HttpClient			httpClient		= null;
+	private CloseableHttpClient httpClient		= null;
 	private HttpUriRequest 		httpRequest		= null;
-	private PoolingHttpClientConnectionManager	poolingHttpClientConnectionManager;
+	private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
 
 	private String				url				= "";
 	private String				method 			= EzHttpClient.GET;
@@ -112,7 +114,10 @@ public class EzHttpClient {
 
 	private Encryption			encryption		= null;
 
-	public void setPoolingHttpClientConnectionManager(PoolingHttpClientConnectionManager poolingHttpClientConnectionManager) {
+	public EzHttpClient() {
+	}
+
+	public EzHttpClient(PoolingHttpClientConnectionManager poolingHttpClientConnectionManager) {
 		this.poolingHttpClientConnectionManager = poolingHttpClientConnectionManager;
 	}
 
@@ -220,7 +225,7 @@ public class EzHttpClient {
 	public int send(String urlParam) {
 		this.url = urlParam;
 
-		if (StringUtils.isEmpty(url)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(url)) {
 			throw new RuntimeException("Empty URL");
 		}
 		if (body != null && params != null) throw new RuntimeException("RequestBody, Parameter 중 한가지만 보낼 수 있습니다.");
@@ -256,14 +261,14 @@ public class EzHttpClient {
 				if (isSSL(url)) {
 					SSLContext sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
 					HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-			        SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
+					SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
 
-			        httpClientBuilder.setSSLSocketFactory(connectionFactory);
+					httpClientBuilder.setSSLSocketFactory(connectionFactory);
 				}
 				httpClient = httpClientBuilder.build();
 			}
 			HttpContext localContext = new BasicHttpContext();
-		    localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookies);
+			localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookies);
 
 			List<NameValuePair> nvps 	= new ArrayList <NameValuePair>();
 			String messageBodyJsonStr	= null;
@@ -282,16 +287,16 @@ public class EzHttpClient {
 					if (param instanceof Object[] ) {
 						for (Object val : (Object[]) param) {
 							String value = String.valueOf(val);
-							if (encryption != null && encryption.isInputEncode() == true ){
+							/*if (encryption != null && encryption.isInputEncode() == true ){
 								value = encryption.encode(value);
-							}
+							}*/
 							nvps.add(new BasicNameValuePair(key, value));
 						}
 					} else {
 						String value = String.valueOf(param.toString());
-						if (encryption != null && encryption.isInputEncode() == true ){
+						/*if (encryption != null && encryption.isInputEncode() == true ){
 							value = encryption.encode(value);
-						}
+						}*/
 						nvps.add(new BasicNameValuePair(key, value));
 					}
 				}
@@ -310,7 +315,7 @@ public class EzHttpClient {
 				HttpPost httpPost = new HttpPost(url);
 				httpPost.setURI(new URI(url));
 
-				if (StringUtils.isNotEmpty(messageBodyJsonStr)) {
+				if (org.apache.commons.lang.StringUtils.isNotEmpty(messageBodyJsonStr)) {
 					httpPost.setEntity(new StringEntity(messageBodyJsonStr, ContentType.create("text/plain", charset)));
 				}
 				if (!nvps.isEmpty()) {
@@ -338,7 +343,7 @@ public class EzHttpClient {
 			}
 
 
-			HttpResponse httpResponse = httpClient.execute(httpRequest, localContext);
+			CloseableHttpResponse httpResponse = httpClient.execute(httpRequest, localContext);
 			if (httpResponse != null) {
 				statusCode = httpResponse.getStatusLine().getStatusCode();
 				if (statusCode == 302) {
@@ -346,32 +351,27 @@ public class EzHttpClient {
 				} else {
 					resultString = EntityUtils.toString(httpResponse.getEntity());
 
-					if (encryption != null && encryption.isOutputDecode() == true) {
+					/*if (encryption != null && encryption.isOutputDecode() == true) {
 						resultString = encryption.decode(resultString);
-					}
+					}*/
 				}
 
 
-				Header responseHeaderArr [] = httpResponse.getAllHeaders();
-				if (responseHeaderArr != null) {
-					responseHeaders = new HashMap<String, String>();
-					for (Header responseHeader : responseHeaderArr) {
-						responseHeaders.put(responseHeader.getName(), responseHeader.getValue());
-					}
+				if (cookies == null) {
+					cookies = new BasicCookieStore();
 				}
 
-				responseCookies = new BasicCookieStore();
 				HeaderElementIterator it = new BasicHeaderElementIterator(httpResponse.headerIterator("Set-Cookie"));
 				int i = 0;
 				while (it.hasNext()) {
 					HeaderElement elem = it.nextElement();
 					BasicClientCookie responseCookie = new BasicClientCookie(elem.getName(), elem.getValue());
+					responseCookie.setDomain(new URI(url).getHost());
 					NameValuePair[] params = elem.getParameters();
 					for (NameValuePair param : params) {
 						for (Method m : responseCookie.getClass().getMethods()) {
 							if (m.getName().indexOf("set") == 0 && m.getName().toLowerCase().indexOf(param.getName()) == 3) {
 								try {
-									log.debug("cookie value: {}", param.getValue());
 									m.invoke(responseCookie, param.getValue());
 								} catch (Exception e) {
 									log.error("{}", e);
@@ -380,11 +380,12 @@ public class EzHttpClient {
 							}
 						}
 					}
-					responseCookies.addCookie(responseCookie);
+					cookies.addCookie(responseCookie);
 				}
-			}
 
-		} catch (URISyntaxException | IOException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+				httpResponse.close();
+			}
+		} catch (Exception e) {
 			log.error("HttpClient Call Fail {}", e);
 		} finally {
 			if (jsseEnableSNIExtension != null && isSSL(url)) {
